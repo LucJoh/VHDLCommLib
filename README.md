@@ -10,18 +10,6 @@ Welcome to VHDLCommLib, a comprehensive library of communication protocols imple
 - **TDM (Time-Division Multiplexing)**
 - **Ethernet**
 - **RS-232/RS-485**
-- **USB (Universal Serial Bus)**
-- **LIN (Local Interconnect Network)**
-- **Modbus**
-- **1-Wire**
-- **HDLC (High-Level Data Link Control)**
-- **SDIO (Secure Digital Input Output)**
-- **MIPI (Mobile Industry Processor Interface)**
-- **Inter-IC Sound (I2S)**
-- **PCIe (Peripheral Component Interconnect Express)**
-- **LoRa (Long Range)**
-- **ZigBee**
-- **Bluetooth**
 
 ## Key Benefits
 - **Modular Design**: Each protocol is implemented as a modular VHDL component, making it easy to integrate into various projects.
