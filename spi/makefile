@@ -14,10 +14,8 @@ TB_ENTITY=tb
 DO_FILE=$(DO_DIR)/do.do
 
 # Name of all source files in compile order
-SRC:=$(SRC_DIR)/jesd.vhd \
-     $(SRC_DIR)/transport_layer.vhd \
-     $(SRC_DIR)/link_layer.vhd \
-	 $(SRC_DIR)/jesd_top.vhd 
+SRC:=$(SRC_DIR)/spi_pkg.vhdl \
+     $(SRC_DIR)/spi.vhdl 
 
 TB=$(TB_DIR)/tb.vhd
 
