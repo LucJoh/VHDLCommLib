@@ -16,35 +16,33 @@
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author  Description
--- 2024-07-30  1.0      lucjoh	Created
+-- 2024-07-30  1.0      lucjoh  Created
 -------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
+use work.spi_pkg.all;
 
 entity spi is
-  port (clk      : in  std_logic;
-        reset    : in  std_logic;
-        data_in  : in  std_logic;
-        data_out : out std_logic;
-        cs       : out std_logic;
-        sclk     : out std_logic;
-        mosi     : out std_logic;
-        miso     : in  std_logic);
+  port (clk     : in  std_logic;
+        rstn    : in  std_logic;
+        spi_in  : in  spi_in_type;
+        spi_out : out spi_out_type
+        );
 end spi;
 
 architecture behavioral of spi is
 
 begin
 
-  process(clk, reset)
+  process(clk, rstn)
   begin
-    if reset = '1' then
+    if rstn = '0' then
     -- reset the state machine
     elsif rising_edge(clk) then
-    -- state machine
+      -- state machine
 
     end if;
   end process;
