@@ -1,0 +1,12 @@
+*.mpf
+work
+transcript
+*.cf
+*.ghw
+*.bak
+*.mti
+*~
+*.ini
+*.wlf
+*.o
+\#*#
