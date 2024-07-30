@@ -2,16 +2,30 @@
 # User configuration
 #####################################################################
 
+# Source file directory
+SRC_DIR=src
+
+# Testbench file directory
+TB_DIR=testbench
+
+# DO-files directory
+DO_DIR=do-files
+
 # Name of testbench entity
-TB_ENTITY=link_layer_tb
+TB_ENTITY=tb
 
 # Name of do file
-DO_FILE=do.do
+#DO_FILE=$(DO_DIR)/do.do
+DO_FILE=$(DO_DIR)/black.do
+#DO_FILE=$(DO_DIR)/report_results.do
 
 # Name of all source files in compile order
-SRC:=link_layer_pkg.vhd \
-	 link_layer.vhd \
-	 link_layer_tb.vhd
+SRC:=$(SRC_DIR)/jesd.vhd \
+     $(SRC_DIR)/transport_layer.vhd \
+     $(SRC_DIR)/link_layer.vhd \
+	 $(SRC_DIR)/jesd_top.vhd 
+
+TB=$(TB_DIR)/tb.vhd
 
 # Specify the simulation time for GHDL
 GHDL_SIM_TIME=120ms
@@ -40,18 +54,18 @@ vim:noet
 all: vcom vsim
 
 vcom: $(SRC)
-		$(VCOM) $(SRC)
+		$(VCOM) $(SRC) $(TB)
 
-vsim: $(TB_ENTITY).vhd*
+vsim: $(TB_DIR)/$(TB_ENTITY).vhd*
 		$(VSIM) $(TB_ENTITY) -do $(DO_FILE)
 
-vsimb: $(TB_ENTITY).vhd*
+vsimb: $(TB_DIR)/$(TB_ENTITY).vhd*
 		$(VSIM) -c $(TB_ENTITY) -do $(DO_FILE)
 
 ghdl:
-	@$(GHDL) -a $(FLAGS) --ieee=synopsys -fexplicit -fsynopsys $(SRC)
-	@$(GHDL) -e $(FLAGS) $(TB_ENTITY)
-	@$(GHDL) -r $(FLAGS) $(TB_ENTITY) --wave=wave.ghw --stop-time=$(GHDL_SIM_TIME)
+	@$(GHDL) -a $(FLAGS) --ieee=synopsys -fexplicit -fsynopsys -frelaxed $(SRC) $(TB)
+	@$(GHDL) -e $(FLAGS) -frelaxed $(TB_ENTITY)
+	@$(GHDL) -r $(FLAGS) -frelaxed $(TB_ENTITY) --wave=wave.ghw --stop-time=$(GHDL_SIM_TIME)
 
 init:
 	vlib work
@@ -64,10 +78,10 @@ help:
 	@echo "$$HEADER"
 	@echo "Usage: make [help|init|all|vcom|vsim|vsimb|ghdl|clean]"
 	@echo ""
-	@echo "  init:   Create Modelsim project"
+	@echo "  init:   Create a design library, and generate a copy of modelsim.ini"
 	@echo "  vcom:   Compile the design using Modelsim"
-	@echo "  vsim:   Simulate the design using Modelsim (do-file required)"
-	@echo "  vsimb:  Simulate the design using Modelsim in batch-mode (do-file required)"  
+	@echo "  vsim:   Simulate the design using Modelsim" 
+	@echo "  vsimb:  Simulate the design using Modelsim in batch-mode"   
 	@echo "  all:    Compile and simulate the design using Modelsim"
 	@echo "  ghdl:   Compile and simulate the design using GHDL"
 	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
