@@ -35,7 +35,7 @@ end spi;
 
 architecture rtl of spi is
 
-  type state_type is (idle, transmit, done);
+  type state_type is (idle, transfer);
 
   type reg_type is record
     state   : state_type;
@@ -67,10 +67,7 @@ begin
       when idle =>
 
 
-      when transmit =>
-
-
-      when done =>
+      when transfer =>
 
 
       when others =>

@@ -19,8 +19,8 @@ SRC:=$(SRC_DIR)/spi_pkg.vhdl \
 
 TB=$(TB_DIR)/tb.vhd
 
-# Specify the simulation time for GHDL
-GHDL_SIM_TIME=120ms
+# Specify the simulation time for GHDL and NVC
+SIM_TIME=120ms
 
 #####################################################################
 # End of user configuration
@@ -58,12 +58,12 @@ vsimb: $(TB_DIR)/$(TB_ENTITY).vhd*
 ghdl:
 	@$(GHDL) -a $(FLAGS) --ieee=synopsys -fexplicit -fsynopsys -frelaxed $(SRC) $(TB)
 	@$(GHDL) -e $(FLAGS) -frelaxed $(TB_ENTITY)
-	@$(GHDL) -r $(FLAGS) -frelaxed $(TB_ENTITY) --wave=wave.ghw --stop-time=$(GHDL_SIM_TIME)
+	@$(GHDL) -r $(FLAGS) -frelaxed $(TB_ENTITY) --wave=wave.ghw --stop-time=$(SIM_TIME)
 
 nvc:
 	@$(NVC) -a $(SRC) $(TB)
 	@$(NVC) -e $(TB_ENTITY)
-	@$(NVC) -r $(TB_ENTITY) --wave=wave.ghw --stop-time=$(GHDL_SIM_TIME)
+	@$(NVC) -r $(TB_ENTITY) --wave=wave.ghw --stop-time=$(SIM_TIME)
 
 init:
 	vlib work
@@ -85,7 +85,7 @@ help:
 	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
 	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
 	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
-	@echo "  nvc:    Compile and simulate the design using nvc"
+	@echo "  nvc:    Compile and simulate the design using NVC"
 	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
 	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
 	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
