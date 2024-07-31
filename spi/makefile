@@ -60,6 +60,11 @@ ghdl:
 	@$(GHDL) -e $(FLAGS) -frelaxed $(TB_ENTITY)
 	@$(GHDL) -r $(FLAGS) -frelaxed $(TB_ENTITY) --wave=wave.ghw --stop-time=$(GHDL_SIM_TIME)
 
+nvc:
+	@$(NVC) -a $(SRC) $(TB)
+	@$(NVC) -e $(TB_ENTITY)
+	@$(NVC) -r $(TB_ENTITY) --wave=wave.ghw --stop-time=$(GHDL_SIM_TIME)
+
 init:
 	vlib work
 	vmap -c
@@ -69,7 +74,7 @@ clean:
 
 help:
 	@echo "$$HEADER"
-	@echo "Usage: make [help|init|all|vcom|vsim|vsimb|ghdl|clean]"
+	@echo "Usage: make [help|init|all|vcom|vsim|vsimb|ghdl|nvc|clean]"
 	@echo ""
 	@echo "  init:   Create a design library, and generate a copy of modelsim.ini"
 	@echo "  vcom:   Compile the design using Modelsim"
@@ -77,6 +82,10 @@ help:
 	@echo "  vsimb:  Simulate the design using Modelsim in batch-mode"   
 	@echo "  all:    Compile and simulate the design using Modelsim"
 	@echo "  ghdl:   Compile and simulate the design using GHDL"
+	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
+	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
+	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
+	@echo "  nvc:    Compile and simulate the design using nvc"
 	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
 	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
 	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
