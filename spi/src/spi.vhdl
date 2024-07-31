@@ -33,19 +33,79 @@ entity spi is
         );
 end spi;
 
-architecture behavioral of spi is
+architecture rtl of spi is
+
+  type state_type is (idle, transmit, done);
+
+  type reg_type is record
+    state   : state_type;
+    counter : integer;
+    i       : integer;     -- data index             
+    data    : std_logic_vector(7 downto 0);
+    enable  : std_logic;
+  end record;
+
+  signal r, rin : reg_type;
+
+---------- begin architecture ------------
 
 begin
 
-  process(clk, rstn)
+  combinational : process(d, r) is
+    variable v : reg_type;
+    variable i : integer := 0;
   begin
-    if rstn = '0' then
-    -- reset the state machine
-    elsif rising_edge(clk) then
-      -- state machine
 
+    ----------- default assignment -----------
+
+    v := r;
+
+    ---------------- algorithm ---------------
+
+    case r.state is
+
+      when idle =>
+
+
+      when transmit =>
+
+
+      when done =>
+
+
+      when others =>
+
+        -- nothing
+
+    end case;
+
+    ----- register input to seq process -----
+
+    rin <= v;
+
+    ------------- entity output -------------
+
+    q.data    <= r.data;
+    q.addr    <= r.addr;
+    q.enable  <= r.enable;
+    q.load    <= r.load;
+    q.adc_rst <= r.adc_rst;
+
+  end process;
+
+  sequential : process(clk) is
+  begin
+    if rst = '1' then
+      r.i       <= 0;
+      r.state   <= rst_pulse;
+      r.load    <= '0';
+      r.enable  <= '0';
+      r.counter <= 0;
+    elsif rising_edge(clk) then
+      r <= rin;
     end if;
   end process;
 
-end behavioral;
+end architecture;
+
 
