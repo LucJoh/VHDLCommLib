@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    :
 -- Created    : 2024-07-31
--- Last update: 2024-08-01
+-- Last update: 2024-08-04
 -- Platform   :
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -15,11 +15,14 @@
 --              component declaration and the constants for the SPI master.
 --
 --              Parameters:
---              - sysclk_div: The division factor for the system clock to get
---                the SPI clock frequency.
---              - datalength: The number of bits in the data bus.
---              - cpol: The clock polarity of SCLK. '0' for idle low, '1' for
---                idle high.
+--              - sysclk     : The frequency of the system clock.
+--              - sysclk_div : The division factor for the system clock to get
+--                             the SPI clock frequency.
+--              - datalength : The number of bits in the data bus.
+--              - cpol       : The clock polarity for SCLK. '0' for idle low, 
+--                             '1' for idle high.
+--              - cpha       : The clock phase for SCLK. '0' for sampling on
+--                             the first edge, '1' for sampling on the second
 -------------------------------------------------------------------------------
 -- Copyright (c) 2024
 -------------------------------------------------------------------------------
@@ -37,18 +40,21 @@ package spi_pkg is
   ------------ Parameters ------------
   ------------------------------------
 
-  constant sysclk_div : integer   := 8;    -- sclk = sysclk / sysclk_div
-  constant datalength : integer   := 8;    -- data length
-  constant cpol       : std_logic := '0';  -- clock polarity
+  constant sys_clk    : integer   := 100e6;  -- system clock frequency (Hz)
+  constant div_factor : integer   := 8;      -- sclk = sysclk / div_factor§
+  constant datalength : integer   := 8;      -- data length
+  constant cpol       : std_logic := '0';    -- clock polarity
+  constant cpha       : std_logic := '0';    -- clock phase
 
   ------------------------------------
   ------------------------------------
   ------------------------------------
 
   type spi_in_type is record
-    enable : std_logic;
-    tx     : std_logic_vector(datalength - 1 downto 0);
-    miso   : std_logic;
+    enable  : std_logic;
+    tx_data : std_logic_vector(datalength - 1 downto 0);
+    miso    : std_logic;
+    rw      : std_logic;
   end record spi_in_type;
 
   type spi_out_type is record
