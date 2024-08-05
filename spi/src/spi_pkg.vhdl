@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    :
 -- Created    : 2024-07-31
--- Last update: 2024-08-04
+-- Last update: 2024-08-05
 -- Platform   :
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -18,6 +18,7 @@
 --              - sysclk     : The frequency of the system clock.
 --              - sysclk_div : The division factor for the system clock to get
 --                             the SPI clock frequency.
+--              - addrwidth  : The number of bits in the address bus.
 --              - datalength : The number of bits in the data bus.
 --              - cpol       : The clock polarity for SCLK. '0' for idle low, 
 --                             '1' for idle high.
@@ -41,8 +42,9 @@ package spi_pkg is
   ------------------------------------
 
   constant sys_clk    : integer   := 100e6;  -- system clock frequency (Hz)
-  constant div_factor : integer   := 8;      -- sclk = sysclk / div_factor§
-  constant datalength : integer   := 8;      -- data length
+  constant div_factor : integer   := 8;      -- sclk = sysclk / div_factor
+  constant addrwidth  : integer   := 8;      -- number of bits in the address bus
+  constant datawidth  : integer   := 8;      -- number of bits in the data bus
   constant cpol       : std_logic := '0';    -- clock polarity
   constant cpha       : std_logic := '0';    -- clock phase
 
@@ -52,16 +54,18 @@ package spi_pkg is
 
   type spi_in_type is record
     enable  : std_logic;
-    tx_data : std_logic_vector(datalength - 1 downto 0);
+    tx_addr : std_logic_vector(addrwidth - 1 downto 0);
+    tx_data : std_logic_vector(datawidth - 1 downto 0);
     miso    : std_logic;
     rw      : std_logic;
   end record spi_in_type;
 
   type spi_out_type is record
-    rx   : std_logic_vector(datalength - 1 downto 0);
-    mosi : std_logic;
-    sclk : std_logic;
-    cs   : std_logic;
+    rx_data : std_logic_vector(datawidth - 1 downto 0);
+    mosi    : std_logic;
+    sclk    : std_logic;
+    cs      : std_logic;
+    ready   : std_logic;
   end record spi_out_type;
 
   component spi is
