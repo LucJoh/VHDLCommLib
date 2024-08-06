@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    : 
 -- Created    : 2024-07-30
--- Last update: 2024-08-05
+-- Last update: 2024-08-06
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -38,31 +38,39 @@ architecture rtl of spi is
   type state_type is (idle, transfer);
 
   type reg_type is record
-    state       : state_type;
+    state             : state_type;
     --counter : integer;
-    i           : integer;              -- data index
-    tx_data     : std_logic_vector(addrwidth + datawidth downto 0);  -- data to send
-    rx_data     : std_logic_vector(datawidth - 1 downto 0);  -- received data
+    i                 : integer;        -- data index
+    tx_data           : std_logic_vector(addrwidth + datawidth downto 0);  -- data to send
+    rx_data           : std_logic_vector(datawidth - 1 downto 0);  -- received data
     --enable  : std_logic;
-    mosi        : std_logic;
-    miso        : std_logic;
-    sclk        : std_logic;
-    clk_counter : integer;
-    cs          : std_logic;
-    ready       : std_logic;            -- SPI master ready
+    mosi              : std_logic;
+    miso              : std_logic;
+    sclk              : std_logic;
+    sclk_prev         : std_logic;
+    sclk_falling_edge : boolean;
+    sclk_rising_edge  : boolean;
+    sclk_sample       : boolean;
+    clk_counter       : integer;
+    cs                : std_logic;
+    ready             : std_logic;      -- SPI master ready for transfer
   end record;
 
-  constant reg_init : reg_type := (state       => idle,
-                                   i           => addrwidth + datawidth - 2,
-                                   tx_data     => (others => '0'),
-                                   rx_data     => (others => '0'),
+  constant reg_init : reg_type := (state             => idle,
+                                   i                 => addrwidth + datawidth - 1,
+                                   tx_data           => (others => '0'),
+                                   rx_data           => (others => '0'),
                                    --enable => '0',
-                                   mosi        => '0',
-                                   miso        => '0',
-                                   sclk        => cpol,
-                                   clk_counter => 0,
-                                   cs          => '1',
-                                   ready       => '0');
+                                   mosi              => '0',
+                                   miso              => '0',
+                                   sclk              => cpol,
+                                   sclk_prev         => cpol,
+                                   sclk_falling_edge => false,
+                                   sclk_rising_edge  => false,
+                                   sclk_sample       => false,
+                                   clk_counter       => 0,
+                                   cs                => '1',
+                                   ready             => '0');
 
   signal r, rin : reg_type := reg_init;
 
@@ -81,25 +89,20 @@ begin
 
     ---------------- algorithm ---------------
 
-    -- SCLK generation --
-    if (r.clk_counter = sys_clk * div_factor) and (r.cs = '0') then
-      v.clk_counter := 0;
-      v.sclk        := not v.sclk;
-    else
-      v.clk_counter := v.clk_counter + 1;
-    end if;
 
+    -------------------
     -- state machine --
+    -------------------
     case r.state is
 
       when idle =>
 
         if spi_in.enable = '1' then
-          v.i       := addrwidth + datawidth - 2;
+          v.i       := addrwidth + datawidth - 1;
           v.cs      := '0';
           v.ready   := '0';
           v.state   := transfer;
-          v.tx_data := spi_in.rw & spi_in.addr & spi_in.tx_data;
+          v.tx_data := spi_in.rw & spi_in.tx_addr & spi_in.tx_data;
         else
           v.ready := '1';
           v.cs    := '1';
@@ -107,29 +110,51 @@ begin
 
       when transfer =>
 
-        -- write
-        if spi_in.rw = '1' then
-          if r.i = 0 then
-            v.state   := idle;
-            v.cs      := '1';
-            v.i       := 0;
-            v.tx_data := (others => '0');
+        -- SCLK generation
+        if (r.clk_counter = sys_clk * div_factor) then
+          v.clk_counter := 0;
+          v.sclk        := not v.sclk;
+        else
+          v.clk_counter := v.clk_counter + 1;
+        end if;
+
+        -- SCLK edge detection
+        v.sclk_rising_edge  := v.sclk = '1' and v.sclk_prev = '0';
+        v.sclk_falling_edge := v.sclk = '0' and v.sclk_prev = '1';
+        if cpha = '0' then
+          v.sclk_sample := v.sclk_rising_edge;
+        else
+          v.sclk_sample := v.sclk_falling_edge;
+        end if;
+
+        -- transfer data
+        if v.sclk_rising_edge then
+
+          -- write
+          if spi_in.rw = '0' then
+            if r.i = 0 then
+              v.state   := idle;
+              v.cs      := '1';
+              v.i       := addrwidth + datawidth - 1;
+              v.tx_data := (others => '0');
+            else
+              v.i    := v.i - 1;
+              v.mosi := v.tx_data(v.i);
+            end if;
+
+          -- read (not done yet)
           else
-            v.i    := v.i - 1;
-            v.mosi := v.tx_data(v.i);
+            if r.i = 0 then
+              v.state   := idle;
+              v.cs      := '1';
+              v.i       := addrwidth + datawidth - 1;
+              v.tx_data := (others => '0');
+            else
+              v.i    := v.i - 1;
+              v.mosi := spi_in.tx_data(v.i);
+            end if;
           end if;
 
-        -- read (not done yet)
-        else
-          if r.i = datawidth - 1 then
-            v.state   := idle;
-            v.cs      := '1';
-            v.i       := addrwidth + datawidth - 2;
-            v.tx_data := (others => '0');
-          else
-            v.i    := v.i - 1;
-            v.mosi := spi_in.tx_data(v.i);
-          end if;
         end if;
 
       when others =>
