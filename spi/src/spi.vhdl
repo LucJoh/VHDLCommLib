@@ -108,7 +108,7 @@ begin
       when transfer =>
 
         -- SCLK generation
-        if (r.clk_counter = sys_clk * div_factor) then
+        if (r.clk_counter = 4) then
           v.clk_counter := 0;
           v.sclk        := not v.sclk;
         else

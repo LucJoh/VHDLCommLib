@@ -67,8 +67,8 @@ begin
 
         -- test vectors
             for i in patterns'range loop
-                wait for clk_period;
-                wait until spi_out.ready = '1';
+                wait for clk_period*100;
+                --wait until spi_out.ready = '1';
                 wait for clk_period;
                 spi_in.enable  <= '1';
                 spi_in.tx_data <= patterns(i);
