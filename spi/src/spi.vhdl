@@ -1,4 +1,4 @@
--------------------------------------------------------------------------------
+  -------------------------------------------------------------------------------
 -- Title      : SPI master
 -- Project    : VHDLCommLib
 -------------------------------------------------------------------------------
@@ -89,10 +89,7 @@ begin
 
     ---------------- algorithm ---------------
 
-
-    -------------------
-    -- state machine --
-    -------------------
+    -- state machine 
     case r.state is
 
       when idle =>
@@ -142,13 +139,16 @@ begin
               v.mosi := v.tx_data(v.i);
             end if;
 
-          -- read (not done yet)
+          -- read
           else
             if r.i = 0 then
               v.state   := idle;
               v.cs      := '1';
               v.i       := addrwidth + datawidth - 1;
               v.tx_data := (others => '0');
+            elsif r.i > addrwidth - 1 then
+              v.i                        := v.i - 1;
+              v.rx_data(v.i - addrwidth) := v.miso;
             else
               v.i    := v.i - 1;
               v.mosi := spi_in.tx_data(v.i);

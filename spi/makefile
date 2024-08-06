@@ -17,7 +17,7 @@ DO_FILE=$(DO_DIR)/do.do
 SRC:=$(SRC_DIR)/spi_pkg.vhdl \
      $(SRC_DIR)/spi.vhdl 
 
-TB=$(TB_DIR)/tb.vhd
+TB=$(TB_DIR)/tb.vhdl
 
 # Specify the simulation time for GHDL and NVC
 SIM_TIME=120ms
