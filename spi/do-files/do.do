@@ -5,6 +5,8 @@ config wave -signalnamewidth 1
 # TESTBENCH SIGNALS
 
 add wave -divider TESTBENCH
+add wave spi_inst/r.i
+add wave spi_inst/r.tx_data
 add wave spi_inst/r.state
 add wave spi_inst/r.clk_counter
 add wave /*
