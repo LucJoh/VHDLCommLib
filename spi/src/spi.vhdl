@@ -1,4 +1,4 @@
-  -------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Title      : SPI master
 -- Project    : VHDLCommLib
 -------------------------------------------------------------------------------
@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    : 
 -- Created    : 2024-07-30
--- Last update: 2024-08-06
+-- Last update: 2024-08-09
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ architecture rtl of spi is
   end record;
 
   constant reg_init : reg_type := (state             => idle,
-                                   i                 => addrwidth + datawidth - 1,
+                                   i                 => addrwidth + datawidth,
                                    tx_data           => (others => '0'),
                                    rx_data           => (others => '0'),
                                    --enable => '0',
@@ -95,14 +95,20 @@ begin
       when idle =>
 
         if spi_in.enable = '1' then
-          v.i       := addrwidth + datawidth - 1;
+          v.i       := addrwidth + datawidth;
           v.cs      := '0';
           v.ready   := '0';
           v.state   := transfer;
           v.tx_data := spi_in.rw & spi_in.tx_addr & spi_in.tx_data;
         else
-          v.ready := '1';
-          v.cs    := '1';
+          v.ready             := '1';
+          v.cs                := '1';
+          v.sclk              := cpol;
+          v.clk_counter       := 0;
+          v.sclk_prev         := cpol;
+          v.sclk_rising_edge  := false;
+          v.sclk_falling_edge := false;
+          v.mosi              := '0';
         end if;
 
       when transfer =>
@@ -118,40 +124,42 @@ begin
         -- SCLK edge detection
         v.sclk_rising_edge  := v.sclk = '1' and v.sclk_prev = '0';
         v.sclk_falling_edge := v.sclk = '0' and v.sclk_prev = '1';
-        if cpha = '0' then
-          v.sclk_sample := v.sclk_rising_edge;
-        else
-          v.sclk_sample := v.sclk_falling_edge;
-        end if;
+        v.sclk_prev         := v.sclk;
+
+        -- if cpha = '0' then
+        --   v.sclk_sample := v.sclk_rising_edge;
+        -- else
+        --   v.sclk_sample := v.sclk_falling_edge;
+        -- end if;
 
         -- transfer data
         if v.sclk_rising_edge then
 
           -- write
           if spi_in.rw = '0' then
-            if r.i = 0 then
+            if r.i < 0 then
               v.state   := idle;
               v.cs      := '1';
-              v.i       := addrwidth + datawidth - 1;
+              v.i       := addrwidth + datawidth;
               v.tx_data := (others => '0');
             else
-              v.i    := v.i - 1;
               v.mosi := v.tx_data(v.i);
+              v.i    := v.i - 1;
             end if;
 
           -- read
           else
-            if r.i = 0 then
+            if r.i < 0 then
               v.state   := idle;
               v.cs      := '1';
-              v.i       := addrwidth + datawidth - 1;
+              v.i       := addrwidth + datawidth;
               v.tx_data := (others => '0');
-            elsif r.i > addrwidth - 1 then
+            elsif r.i > addrwidth then
+              v.rx_data(v.i - addrwidth - 1) := v.miso;
               v.i                        := v.i - 1;
-              v.rx_data(v.i - addrwidth) := v.miso;
             else
-              v.i    := v.i - 1;
               v.mosi := spi_in.tx_data(v.i);
+              v.i    := v.i - 1;
             end if;
           end if;
 
