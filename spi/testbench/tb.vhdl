@@ -104,7 +104,7 @@ begin
         wait until spi_out.ready = '1';
         wait for clk_period * 50;
       end if;
-      spi_in.enable <= '1';
+      spi_in.enable  <= '1';
       spi_in.tx_addr <= patterns(i);
       wait for clk_period;
       spi_in.enable  <= '0';
@@ -113,8 +113,9 @@ begin
         if sclk_rising_edge /= true then
           wait until sclk_rising_edge = true;
         end if;
-      addr_bit_counter <= addr_bit_counter + 1;
+        addr_bit_counter <= addr_bit_counter + 1;
       end loop;
+      addr_bit_counter <= 0;
       -- send dummy data
       for j in 0 to datawidth - 1 loop
         if sclk_rising_edge /= true then

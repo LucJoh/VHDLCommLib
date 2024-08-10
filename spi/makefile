@@ -44,7 +44,7 @@ vim:noet
 
 .PHONY: all vcom vsim vsimb ghdl clean help init
 
-all: vcom vsim
+all: clean init vcom vsim
 
 vcom: $(SRC)
 		$(VCOM) $(SRC) $(TB)

@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    : 
 -- Created    : 2024-07-30
--- Last update: 2024-08-09
+-- Last update: 2024-08-10
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -39,11 +39,9 @@ architecture rtl of spi is
 
   type reg_type is record
     state             : state_type;
-    --counter : integer;
     i                 : integer;        -- data index
     tx_data           : std_logic_vector(addrwidth + datawidth downto 0);  -- data to send
     rx_data           : std_logic_vector(datawidth - 1 downto 0);  -- received data
-    --enable  : std_logic;
     mosi              : std_logic;
     miso              : std_logic;
     sclk              : std_logic;
@@ -56,13 +54,13 @@ architecture rtl of spi is
     ready             : std_logic;      -- SPI master ready for transfer
   end record;
 
+  -- default register values
   constant reg_init : reg_type := (state             => idle,
                                    i                 => addrwidth + datawidth,
                                    tx_data           => (others => '0'),
                                    rx_data           => (others => '0'),
-                                   --enable => '0',
-                                   mosi              => '0',
-                                   miso              => '0',
+                                   mosi              => 'X',
+                                   miso              => 'X',
                                    sclk              => cpol,
                                    sclk_prev         => cpol,
                                    sclk_falling_edge => false,
@@ -80,7 +78,6 @@ begin
 
   combinational : process(spi_in, r) is
     variable v : reg_type;
-  --variable i : integer := 0;
   begin
 
     ----------- default assignment -----------
@@ -89,7 +86,7 @@ begin
 
     ---------------- algorithm ---------------
 
-    -- state machine 
+    -- SPI state machine 
     case r.state is
 
       when idle =>
@@ -108,7 +105,7 @@ begin
           v.sclk_prev         := cpol;
           v.sclk_rising_edge  := false;
           v.sclk_falling_edge := false;
-          v.mosi              := '0';
+          v.mosi              := 'X';
         end if;
 
       when transfer =>
@@ -142,6 +139,7 @@ begin
               v.cs      := '1';
               v.i       := addrwidth + datawidth;
               v.tx_data := (others => '0');
+              v.mosi    := 'X';
             else
               v.mosi := v.tx_data(v.i);
               v.i    := v.i - 1;
@@ -154,11 +152,12 @@ begin
               v.cs      := '1';
               v.i       := addrwidth + datawidth;
               v.tx_data := (others => '0');
+              v.mosi    := 'X';
             elsif r.i > addrwidth then
               v.rx_data(v.i - addrwidth - 1) := v.miso;
-              v.i                        := v.i - 1;
+              v.i                            := v.i - 1;
             else
-              v.mosi := spi_in.tx_data(v.i);
+              v.mosi := v.tx_data(v.i);
               v.i    := v.i - 1;
             end if;
           end if;
