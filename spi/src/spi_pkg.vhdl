@@ -65,6 +65,7 @@ package spi_pkg is
     mosi    : std_logic;
     sclk    : std_logic;
     cs      : std_logic;
+    done    : std_logic;
     ready   : std_logic;
   end record spi_out_type;
 

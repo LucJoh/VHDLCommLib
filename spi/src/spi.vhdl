@@ -99,6 +99,7 @@ begin
           v.tx_data := spi_in.rw & spi_in.tx_addr & spi_in.tx_data;
         else
           v.ready             := '1';
+          v.done              := '0';
           v.cs                := '1';
           v.sclk              := cpol;
           v.clk_counter       := 0;
@@ -136,6 +137,7 @@ begin
           if spi_in.rw = '0' then
             if r.i < 0 then
               v.state   := idle;
+              v.done    := '1';
               v.cs      := '1';
               v.i       := addrwidth + datawidth;
               v.tx_data := (others => '0');
@@ -149,12 +151,14 @@ begin
           else
             if r.i < 0 then
               v.state   := idle;
+              v.done    := '1';
               v.cs      := '1';
               v.i       := addrwidth + datawidth;
               v.tx_data := (others => '0');
               v.mosi    := 'X';
-            elsif r.i > addrwidth then
-              v.rx_data(v.i - addrwidth - 1) := v.miso;
+            elsif r.i < addrwidth then
+              v.mosi := 'X';
+              v.rx_data(v.i) := v.miso;
               v.i                            := v.i - 1;
             else
               v.mosi := v.tx_data(v.i);
