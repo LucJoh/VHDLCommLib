@@ -12,7 +12,6 @@ add wave spi_inst/r.sclk_prev
 add wave spi_inst/r.tx_data
 add wave spi_inst/r.state
 add wave spi_inst/r.clk_counter
-add wave k
 add wave /*
 
 # SPI IN SIGNALS

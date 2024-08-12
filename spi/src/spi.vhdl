@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    : 
 -- Created    : 2024-07-30
--- Last update: 2024-08-10
+-- Last update: 2024-08-13
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -51,6 +51,7 @@ architecture rtl of spi is
     sclk_sample       : boolean;
     clk_counter       : integer;
     cs                : std_logic;
+    done              : std_logic;      -- SPI transfer done
     ready             : std_logic;      -- SPI master ready for transfer
   end record;
 
@@ -68,6 +69,7 @@ architecture rtl of spi is
                                    sclk_sample       => false,
                                    clk_counter       => 0,
                                    cs                => '1',
+                                   done              => '0',
                                    ready             => '0');
 
   signal r, rin : reg_type := reg_init;
@@ -157,9 +159,9 @@ begin
               v.tx_data := (others => '0');
               v.mosi    := 'X';
             elsif r.i < addrwidth then
-              v.mosi := 'X';
+              v.mosi         := 'X';
               v.rx_data(v.i) := v.miso;
-              v.i                            := v.i - 1;
+              v.i            := v.i - 1;
             else
               v.mosi := v.tx_data(v.i);
               v.i    := v.i - 1;
@@ -181,6 +183,7 @@ begin
     ------------- entity output -------------
 
     spi_out.mosi    <= r.mosi;
+    spi_out.done    <= r.done;
     spi_out.ready   <= r.ready;
     spi_out.sclk    <= r.sclk;
     spi_out.cs      <= r.cs;
