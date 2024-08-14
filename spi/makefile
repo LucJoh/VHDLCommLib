@@ -30,7 +30,7 @@ SIM_TIME=120ms
 #####################################################################
 
 # Tools
-VCOM=vcom
+VCOM=vcom -2008
 VSIM=vsim
 GHDL=ghdl
 NVC=nvc

@@ -4,7 +4,11 @@ config wave -signalnamewidth 1
 
 # TESTBENCH SIGNALS
 
-add wave -divider TESTBENCH
+#add wave -divider TESTBENCH
+add wave spi_inst/combinational/v.i
+add wave spi_inst/combinational/v.sclk_rising_edge
+add wave spi_inst/combinational/v.sclk_falling_edge
+add wave spi_inst/combinational/v.sclk_prev
 add wave spi_inst/r.i
 add wave spi_inst/r.sclk_rising_edge
 add wave spi_inst/r.sclk_falling_edge

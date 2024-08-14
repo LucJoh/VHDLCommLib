@@ -39,9 +39,11 @@ architecture rtl of spi is
 
   type reg_type is record
     state             : state_type;
+    idle_counter      : integer;        -- idle counter
     i                 : integer;        -- data index
     tx_data           : std_logic_vector(addrwidth + datawidth downto 0);  -- data to send
     rx_data           : std_logic_vector(datawidth - 1 downto 0);  -- received data
+    rx_data_temp      : std_logic_vector(datawidth - 1 downto 0);  -- received data
     mosi              : std_logic;
     miso              : std_logic;
     sclk              : std_logic;
@@ -57,9 +59,11 @@ architecture rtl of spi is
 
   -- default register values
   constant reg_init : reg_type := (state             => idle,
+                                   idle_counter      => 0,
                                    i                 => addrwidth + datawidth,
-                                   tx_data           => (others => '0'),
-                                   rx_data           => (others => '0'),
+                                   tx_data           => (others => 'X'),
+                                   rx_data           => (others => 'X'),
+                                   rx_data_temp      => (others => 'X'),
                                    mosi              => 'X',
                                    miso              => 'X',
                                    sclk              => cpol,
@@ -85,6 +89,7 @@ begin
     ----------- default assignment -----------
 
     v := r;
+    v.miso := spi_in.miso;
 
     ---------------- algorithm ---------------
 
@@ -93,13 +98,18 @@ begin
 
       when idle =>
 
+        v.done := '0';  
         if spi_in.enable = '1' then
+        --if v.idle_counter > 0 then
+          v.done    := '0'; 
           v.i       := addrwidth + datawidth;
           v.cs      := '0';
           v.ready   := '0';
           v.state   := transfer;
           v.tx_data := spi_in.rw & spi_in.tx_addr & spi_in.tx_data;
+      --end if;
         else
+        --  v.idle_counter := v.idle_counter + 1;
           v.ready             := '1';
           v.done              := '0';
           v.cs                := '1';
@@ -126,24 +136,31 @@ begin
         v.sclk_falling_edge := v.sclk = '0' and v.sclk_prev = '1';
         v.sclk_prev         := v.sclk;
 
-        -- if cpha = '0' then
-        --   v.sclk_sample := v.sclk_rising_edge;
-        -- else
-        --   v.sclk_sample := v.sclk_falling_edge;
-        -- end if;
+         -- CPOL and CPHA configuration
+        if cpol = '0' and cpha = '0' then
+           v.sclk_sample := v.sclk_rising_edge;
+        elsif cpol = '0' and cpha = '1' then
+           v.sclk_sample := v.sclk_falling_edge;
+       elsif cpol = '1' and cpha = '0' then
+           v.sclk_sample := v.sclk_falling_edge;
+       elsif cpol = '1' and cpha = '1' then
+           v.sclk_sample := v.sclk_rising_edge;
+         end if;
 
         -- transfer data
-        if v.sclk_rising_edge then
+         if r.sclk_sample then
 
           -- write
           if spi_in.rw = '0' then
             if r.i < 0 then
               v.state   := idle;
+              v.idle_counter := 0;
               v.done    := '1';
               v.cs      := '1';
               v.i       := addrwidth + datawidth;
               v.tx_data := (others => '0');
               v.mosi    := 'X';
+              v.sclk    := cpol;
             else
               v.mosi := v.tx_data(v.i);
               v.i    := v.i - 1;
@@ -153,14 +170,18 @@ begin
           else
             if r.i < 0 then
               v.state   := idle;
+              v.idle_counter := 0;
               v.done    := '1';
               v.cs      := '1';
               v.i       := addrwidth + datawidth;
-              v.tx_data := (others => '0');
+              v.tx_data := (others => 'X');
               v.mosi    := 'X';
+              v.rx_data := v.rx_data_temp;
+              v.sclk    := cpol;
             elsif r.i < addrwidth then
               v.mosi         := 'X';
-              v.rx_data(v.i) := v.miso;
+              v.rx_data_temp(v.i) := v.miso;
+              --v.rx_data(v.i) := 'Z';
               v.i            := v.i - 1;
             else
               v.mosi := v.tx_data(v.i);

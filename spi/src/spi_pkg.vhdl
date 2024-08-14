@@ -45,8 +45,8 @@ package spi_pkg is
   constant div_factor : integer   := 8;      -- sclk = sysclk / div_factor
   constant addrwidth  : integer   := 8;      -- number of bits in the address bus
   constant datawidth  : integer   := 8;      -- number of bits in the data bus
-  constant cpol       : std_logic := '0';    -- clock polarity
-  constant cpha       : std_logic := '0';    -- clock phase
+  constant cpol       : std_logic := '1';    -- clock polarity
+  constant cpha       : std_logic := '1';    -- clock phase
 
   ------------------------------------
   ------------------------------------
