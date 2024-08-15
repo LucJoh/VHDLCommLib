@@ -1,8 +1,8 @@
-**SPI VHDL Simulation and Compilation with Makefile**
+# SPI VHDL Simulation and Compilation with Makefile
 
 This directory contains the necessary files and a Makefile to manage VHDL simulation and compilation tasks for the SPI project using ModelSim, GHDL, or NVC.
 
-Prerequisites
+## Prerequisites
 
 Ensure you have at least one of the following tools installed on your system:
 
@@ -11,42 +11,42 @@ Ensure you have at least one of the following tools installed on your system:
 - NVC 
 - GTKWave (required for waveform viewing when using GHDL or NVC)
 
-**Usage**
+## Usage
 
 The Makefile supports various targets to help you manage your simulation and compilation workflow. Below are the available targets and their descriptions:
 
-**init**
+# init
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
 - Usage: 
   make init
 - Effect: This command sets up the necessary environment for ModelSim by creating a design library and copying modelsim.ini.
 
-**vcom**
+# vcom
 - Purpose: Compile the design using ModelSim.
 - Usage:
   make vcom
 
-**vsim**
+# vsim
 - Purpose: Simulate the design using ModelSim (GUI mode).
 - Usage:
   make vsim
 
-**vsimb**
+# vsimb
 - Purpose: Simulate the design using ModelSim in batch mode.
 - Usage:
   make vsimb
 
-**all**
+# all
 - Purpose: Compile and simulate the design using ModelSim (GUI mode).
 - Usage:
   make all
 
-**ghdl**
+# ghdl
 - Purpose: Compile and simulate the design using GHDL.
 - Usage:
   make ghdl
 
-**nvc**
+# nvc
 - Purpose: Compile and simulate the design using NVC.
 - Usage:
   make nvc
@@ -58,13 +58,12 @@ The Makefile supports various targets to help you manage your simulation and com
 - To load waveform configuration:
   gtkwave wave.ghw config.gtkw
 
-**clean**
+# clean
 - Purpose: Remove all generated files.
 - Usage:
   make clean
-- Effect: This command cleans up all generated files from the compilation and simulation process.
 
-**Example Workflow with ModelSim**
+## Example Workflow with ModelSim
 
 1. Initialize the project:
    make init
