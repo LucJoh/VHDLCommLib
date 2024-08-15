@@ -30,7 +30,7 @@ The Makefile supports various targets to help you manage your simulation and com
 - Purpose: Display a list of available targets and their descriptions.
 - Usage:
 ##
-*make help*
+make help
 
 # init
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
