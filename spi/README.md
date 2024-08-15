@@ -29,40 +29,47 @@ The Makefile supports various targets to help you manage your simulation and com
 # help
 - Purpose: Display a list of available targets and their descriptions.
 - Usage:
-  make help
+
+  *make help*
 
 # init
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
-- Usage: 
-  make init
+- Usage:
+
+  *make init*
 
 # vcom
 - Purpose: Compile the design using ModelSim.
-- Usage:
-  make vcom
+- Usage:  
+
+  *make vcom*
 
 # vsim
 - Purpose: Simulate the design using ModelSim (GUI mode).
-- Usage:
-  make vsim
+- Usage:  
+
+  *make vsim*
 
 # vsimb
 - Purpose: Simulate the design using ModelSim in batch mode.
-- Usage:
-  make vsimb
+- Usage:  
+
+  *make vsimb*
 
 # all
 - Purpose: Compile and simulate the design using ModelSim (GUI mode).
-- Usage:
-  make all
+- Usage:  
+
+  *make all*
 
 # ghdl
 - Purpose: Compile and simulate the design using GHDL.
-- Usage:
-  make ghdl
+- Usage: 
+
+  *make ghdl*
 
 - To view waveforms with GTKWave, run:
-  gtkwave wave.ghw
+  *gtkwave wave.ghw*
 - To save waveform configuration:
   Inside GTKWave, go to File -> Write Save File.
 - To load waveform configuration:
@@ -70,11 +77,12 @@ The Makefile supports various targets to help you manage your simulation and com
 
 # nvc
 - Purpose: Compile and simulate the design using NVC.
-- Usage:
-  make nvc
+- Usage:  
+
+  *make nvc*
 
 - To view waveforms with GTKWave, run:
-  gtkwave wave.ghw
+  *gtkwave wave.ghw*
 - To save waveform configuration:
   Inside GTKWave, go to File -> Write Save File.
 - To load waveform configuration:
@@ -82,13 +90,16 @@ The Makefile supports various targets to help you manage your simulation and com
 
 # clean
 - Purpose: Remove all generated files.
-- Usage:
-  make clean
+- Usage:  
+
+  *make clean*
 
 ## Example Workflow with ModelSim
 
-1. Initialize the project:
-   make init
+1. Initialize the project:  
 
-2. Compile and open the simulation in the GUI:
-   make all
+  *make init*
+
+2. Compile and open the simulation in the GUI:  
+
+  *make all*
