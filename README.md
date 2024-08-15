@@ -4,9 +4,7 @@ Welcome to VHDLCommLib, a comprehensive library of communication protocols imple
 
 ## Design Methodology
 
-The VHDL modules in this repository are designed using the **two-process method**. This method involves separating the combinational logic and the sequential logic into two distinct processes. The first process handles the combinational logic and is sensitive to input signals, while the second process handles the sequential logic and is driven by the clock signal. This separation simplifies the design, improves readability, and ensures that the design adheres to good coding practices, reducing the risk of errors and making the design more maintainable.
-
-For more details on the two-process method, you can refer to the original paper [here](https://www.gaisler.com/doc/vhdl2proc.pdf).
+The VHDL modules in this repository are designed using the [two-process method](https://www.gaisler.com/doc/vhdl2proc.pdf). This method involves separating the combinational logic and the sequential logic into two distinct processes. The first process handles the combinational logic and is sensitive to input signals, while the second process handles the sequential logic and is driven by the clock signal. This separation simplifies the design, improves readability, and ensures that the design adheres to good coding practices, reducing the risk of errors and making the design more maintainable.
 
 ## Features
 - **SPI (Serial Peripheral Interface)**
