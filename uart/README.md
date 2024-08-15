@@ -28,7 +28,8 @@ The Makefile supports various targets to help you manage your simulation and com
 
 # help
 - Purpose: Display a list of available targets and their descriptions.
-- Usage:  
+- Usage:
+
 *make help*
 
 # init
