@@ -15,6 +15,11 @@ Ensure you have at least one of the following tools installed on your system:
 
 The Makefile supports various targets to help you manage your simulation and compilation workflow. Below are the available targets and their descriptions:
 
+# help
+- Purpose: Display a list of available targets and their descriptions.
+- Usage:
+  make help
+
 # init
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
 - Usage: 
