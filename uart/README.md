@@ -30,37 +30,43 @@ The Makefile supports various targets to help you manage your simulation and com
 - Purpose: Display a list of available targets and their descriptions.
 - Usage:
 
-*make help*
+  *make help*
 
 # init
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
-- Usage:  
-*make init*
+- Usage:
+
+  *make init*
 
 # vcom
 - Purpose: Compile the design using ModelSim.
 - Usage:  
-*make vcom*
+
+  *make vcom*
 
 # vsim
 - Purpose: Simulate the design using ModelSim (GUI mode).
 - Usage:  
-*make vsim*
+
+  *make vsim*
 
 # vsimb
 - Purpose: Simulate the design using ModelSim in batch mode.
 - Usage:  
-*make vsimb*
+
+  *make vsimb*
 
 # all
 - Purpose: Compile and simulate the design using ModelSim (GUI mode).
 - Usage:  
-*make all*
+
+  *make all*
 
 # ghdl
 - Purpose: Compile and simulate the design using GHDL.
-- Usage:  
-*make ghdl*
+- Usage: 
+
+  *make ghdl*
 
 - To view waveforms with GTKWave, run:
   *gtkwave wave.ghw*
@@ -72,7 +78,8 @@ The Makefile supports various targets to help you manage your simulation and com
 # nvc
 - Purpose: Compile and simulate the design using NVC.
 - Usage:  
-*make nvc*
+
+  *make nvc*
 
 - To view waveforms with GTKWave, run:
   *gtkwave wave.ghw*
@@ -84,12 +91,15 @@ The Makefile supports various targets to help you manage your simulation and com
 # clean
 - Purpose: Remove all generated files.
 - Usage:  
-*make clean*
+
+  *make clean*
 
 ## Example Workflow with ModelSim
 
 1. Initialize the project:  
-*make init*
+
+  *make init*
 
 2. Compile and open the simulation in the GUI:  
-*make all*
+
+  *make all*
