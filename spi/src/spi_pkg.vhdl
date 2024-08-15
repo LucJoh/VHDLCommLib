@@ -16,10 +16,10 @@
 --
 --              Parameters:
 --              - sysclk     : The frequency of the system clock.
---              - sysclk_div : The division factor for the system clock to get
+--              - div_factor : The division factor for the system clock to get
 --                             the SPI clock frequency.
 --              - addrwidth  : The number of bits in the address bus.
---              - datalength : The number of bits in the data bus.
+--              - datawidth  : The number of bits in the data bus.
 --              - cpol       : The clock polarity for SCLK. '0' for idle low, 
 --                             '1' for idle high.
 --              - cpha       : The clock phase for SCLK. '0' for sampling on

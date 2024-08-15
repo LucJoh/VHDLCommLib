@@ -2,6 +2,17 @@
 
 This directory contains the necessary files and a Makefile to manage VHDL simulation and compilation tasks for the SPI project using ModelSim, GHDL, or NVC.
 
+# SPI\_pkg.vhdl
+
+The package file contains parameters that dictates the SPI operation.
+
+- sys\_clk: System clock frequency (Hz)
+- div\_factor: System clock divider factor to get the SCLK frequency
+- addrwidth: Address width
+- datawidth: Data width
+- cpol: Clock Polarity
+- cpha: Clock Phase
+
 ## Prerequisites
 
 Ensure you have at least one of the following tools installed on your system:
