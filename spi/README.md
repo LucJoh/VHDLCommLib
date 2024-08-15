@@ -2,7 +2,7 @@
 
 This directory contains the necessary files and a Makefile to manage VHDL simulation and compilation tasks for the SPI project using ModelSim, GHDL, or NVC.
 
-# SPI\_pkg.vhdl
+# src/spi\_pkg.vhdl
 
 The package file contains parameters that dictates the SPI operation.
 
