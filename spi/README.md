@@ -24,7 +24,6 @@ The Makefile supports various targets to help you manage your simulation and com
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
 - Usage: 
   make init
-- Effect: This command sets up the necessary environment for ModelSim by creating a design library and copying modelsim.ini.
 
 # vcom
 - Purpose: Compile the design using ModelSim.
@@ -50,6 +49,13 @@ The Makefile supports various targets to help you manage your simulation and com
 - Purpose: Compile and simulate the design using GHDL.
 - Usage:
   make ghdl
+
+- To view waveforms with GTKWave, run:
+  gtkwave wave.ghw
+- To save waveform configuration:
+  Inside GTKWave, go to File -> Write Save File.
+- To load waveform configuration:
+  gtkwave wave.ghw config.gtkw
 
 # nvc
 - Purpose: Compile and simulate the design using NVC.
