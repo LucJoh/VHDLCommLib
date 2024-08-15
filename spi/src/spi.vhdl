@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    : 
 -- Created    : 2024-07-30
--- Last update: 2024-08-13
+-- Last update: 2024-08-15
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ begin
 
     ----------- default assignment -----------
 
-    v := r;
+    v      := r;
     v.miso := spi_in.miso;
 
     ---------------- algorithm ---------------
@@ -98,18 +98,15 @@ begin
 
       when idle =>
 
-        v.done := '0';  
+        v.done := '0';
         if spi_in.enable = '1' then
-        --if v.idle_counter > 0 then
-          v.done    := '0'; 
+          v.done    := '0';
           v.i       := addrwidth + datawidth;
           v.cs      := '0';
           v.ready   := '0';
           v.state   := transfer;
           v.tx_data := spi_in.rw & spi_in.tx_addr & spi_in.tx_data;
-      --end if;
         else
-        --  v.idle_counter := v.idle_counter + 1;
           v.ready             := '1';
           v.done              := '0';
           v.cs                := '1';
@@ -136,31 +133,31 @@ begin
         v.sclk_falling_edge := v.sclk = '0' and v.sclk_prev = '1';
         v.sclk_prev         := v.sclk;
 
-         -- CPOL and CPHA configuration
+        -- CPOL and CPHA configuration
         if cpol = '0' and cpha = '0' then
-           v.sclk_sample := v.sclk_rising_edge;
+          v.sclk_sample := v.sclk_rising_edge;
         elsif cpol = '0' and cpha = '1' then
-           v.sclk_sample := v.sclk_falling_edge;
-       elsif cpol = '1' and cpha = '0' then
-           v.sclk_sample := v.sclk_falling_edge;
-       elsif cpol = '1' and cpha = '1' then
-           v.sclk_sample := v.sclk_rising_edge;
-         end if;
+          v.sclk_sample := v.sclk_falling_edge;
+        elsif cpol = '1' and cpha = '0' then
+          v.sclk_sample := v.sclk_falling_edge;
+        elsif cpol = '1' and cpha = '1' then
+          v.sclk_sample := v.sclk_rising_edge;
+        end if;
 
         -- transfer data
-         if r.sclk_sample then
+        if r.sclk_sample then
 
           -- write
           if spi_in.rw = '0' then
             if r.i < 0 then
-              v.state   := idle;
+              v.state        := idle;
               v.idle_counter := 0;
-              v.done    := '1';
-              v.cs      := '1';
-              v.i       := addrwidth + datawidth;
-              v.tx_data := (others => '0');
-              v.mosi    := 'X';
-              v.sclk    := cpol;
+              v.done         := '1';
+              v.cs           := '1';
+              v.i            := addrwidth + datawidth;
+              v.tx_data      := (others => '0');
+              v.mosi         := 'X';
+              v.sclk         := cpol;
             else
               v.mosi := v.tx_data(v.i);
               v.i    := v.i - 1;
@@ -169,20 +166,19 @@ begin
           -- read
           else
             if r.i < 0 then
-              v.state   := idle;
+              v.state        := idle;
               v.idle_counter := 0;
-              v.done    := '1';
-              v.cs      := '1';
-              v.i       := addrwidth + datawidth;
-              v.tx_data := (others => 'X');
-              v.mosi    := 'X';
-              v.rx_data := v.rx_data_temp;
-              v.sclk    := cpol;
-            elsif r.i < addrwidth then
+              v.done         := '1';
+              v.cs           := '1';
+              v.i            := addrwidth + datawidth;
+              v.tx_data      := (others => 'X');
               v.mosi         := 'X';
+              v.rx_data      := v.rx_data_temp;
+              v.sclk         := cpol;
+            elsif r.i < addrwidth then
+              v.mosi              := 'X';
               v.rx_data_temp(v.i) := v.miso;
-              --v.rx_data(v.i) := 'Z';
-              v.i            := v.i - 1;
+              v.i                 := v.i - 1;
             else
               v.mosi := v.tx_data(v.i);
               v.i    := v.i - 1;
