@@ -1,9 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_unsigned.all;
-use work.spi_pkg.all;
 use ieee.numeric_std.all;
 use std.textio.all;
+use work.spi_pkg.all;
 
 entity tb is
 end entity;
