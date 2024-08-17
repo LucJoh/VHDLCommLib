@@ -12,7 +12,7 @@
 -------------------------------------------------------------------------------
 -- Description: Package file for SPI master. Contains the record types for the
 --              input and output signals of the SPI master, as well as the
---              component declaration and the constants for the SPI master.
+--              component declaration and the parameters for the SPI master.
 --
 --              Parameters:
 --              - sysclk     : The frequency of the system clock.
