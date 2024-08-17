@@ -159,7 +159,6 @@ begin
     end if;
 
     -- stop the simulation
-    assert false
     report "-------- WRITE OPERATTION --------";
     report "TO BE SENT : ADDRESS : " & to_string(tx_addr) & " DATA : " & to_string(tx_data);
     report "DETECTED ON MOSI LINE : ADDRESS : " & to_string(mosi(addrwidth + datawidth - 1 downto datawidth)) & " DATA : " & to_string(mosi(datawidth - 1 downto 0));
