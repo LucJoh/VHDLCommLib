@@ -38,7 +38,6 @@ architecture rtl of spi is
 
   type reg_type is record
     state             : state_type;
-    idle_counter      : integer;        -- idle counter
     i                 : integer;        -- data index
     tx_data           : std_logic_vector(addrwidth + datawidth downto 0);  -- data to send
     rx_data           : std_logic_vector(datawidth - 1 downto 0);  -- received data
@@ -58,7 +57,6 @@ architecture rtl of spi is
 
   -- default register values
   constant reg_init : reg_type := (state             => idle,
-                                   idle_counter      => 0,
                                    i                 => addrwidth + datawidth,
                                    tx_data           => (others => '0'),
                                    rx_data           => (others => '0'),
@@ -150,7 +148,6 @@ begin
           if spi_in.rw = '0' then
             if r.i < 0 then
               v.state        := idle;
-              v.idle_counter := 0;
               v.done         := '1';
               v.cs           := '1';
               v.i            := addrwidth + datawidth;
@@ -166,7 +163,6 @@ begin
           else
             if r.i < 0 then
               v.state        := idle;
-              v.idle_counter := 0;
               v.done         := '1';
               v.cs           := '1';
               v.i            := addrwidth + datawidth;
