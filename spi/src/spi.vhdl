@@ -118,7 +118,7 @@ begin
       when transfer =>
 
         -- SCLK generation
-        if (r.clk_counter = 4) then
+        if (r.clk_counter = div_factor) then
           v.clk_counter := 0;
           v.sclk        := not v.sclk;
         else
