@@ -6,12 +6,9 @@ This directory contains the necessary files and a Makefile to manage VHDL simula
 
 The package file contains parameters that dictates the UART operation.
 
-- sys\_clk: System clock frequency (Hz)
-- div\_factor: System clock divider factor to get the SCLK frequency
-- addrwidth: Address width
+- sys\_clk\_period: System clock period (ns)
+- baud\_rate: Baud rate (bps)
 - datawidth: Data width
-- cpol: Clock Polarity
-- cpha: Clock Phase
 
 ## Prerequisites
 

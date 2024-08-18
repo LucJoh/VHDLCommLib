@@ -60,7 +60,7 @@ architecture rtl of uart_tx is
                                    baud_clk_prev         => '0',
                                    baud_clk_rising_edge  => false,
                                    baud_clk_falling_edge => false,
-                                   tx                    => '0',
+                                   tx                    => 'X',
                                    done                  => '0',
                                    ready                 => '0');
 
@@ -88,10 +88,10 @@ begin
 
         v.done := '0';
         if uart_tx_in.start = '1' then
-          v.done    := '0';
-          v.i       := 0;
-          v.ready   := '0';
-          v.state   := transfer;
+          v.done      := '0';
+          v.i         := 0;
+          v.ready     := '0';
+          v.state     := transfer;
           v.tx_vector := '1' & uart_tx_in.data & '0';  -- LSB first ;-)
         else
           v.ready := '1';
@@ -116,12 +116,13 @@ begin
         -- transfer data
         if r.baud_clk_rising_edge then
 
-          if r.i = 1 + datawidth-1 + 1 then
+          if r.i > 1 + datawidth-1 + 1 then
             v.done  := '1';
             v.state := idle;
+            v.tx    := 'X';
           else
             v.tx := v.tx_vector(v.i);
-            v.i              := v.i + 1;
+            v.i  := v.i + 1;
           end if;
 
         end if;
