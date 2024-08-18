@@ -60,11 +60,11 @@ architecture rtl of spi is
   constant reg_init : reg_type := (state             => idle,
                                    idle_counter      => 0,
                                    i                 => addrwidth + datawidth,
-                                   tx_data           => (others => 'X'),
-                                   rx_data           => (others => 'X'),
-                                   rx_data_temp      => (others => 'X'),
-                                   mosi              => 'X',
-                                   miso              => 'X',
+                                   tx_data           => (others => '0'),
+                                   rx_data           => (others => '0'),
+                                   rx_data_temp      => (others => '0'),
+                                   mosi              => '0',
+                                   miso              => '0',
                                    sclk              => cpol,
                                    sclk_prev         => cpol,
                                    sclk_falling_edge => false,
@@ -114,7 +114,7 @@ begin
           v.sclk_prev         := cpol;
           v.sclk_rising_edge  := false;
           v.sclk_falling_edge := false;
-          v.mosi              := 'X';
+          v.mosi              := '0';
         end if;
 
       when transfer =>
@@ -155,7 +155,7 @@ begin
               v.cs           := '1';
               v.i            := addrwidth + datawidth;
               v.tx_data      := (others => '0');
-              v.mosi         := 'X';
+              v.mosi         := '0';
               v.sclk         := cpol;
             else
               v.mosi := v.tx_data(v.i);
@@ -170,12 +170,12 @@ begin
               v.done         := '1';
               v.cs           := '1';
               v.i            := addrwidth + datawidth;
-              v.tx_data      := (others => 'X');
-              v.mosi         := 'X';
+              v.tx_data      := (others => '0');
+              v.mosi         := '0';
               v.rx_data      := v.rx_data_temp;
               v.sclk         := cpol;
             elsif r.i < addrwidth then
-              v.mosi              := 'X';
+              v.mosi              := '0';
               v.rx_data_temp(v.i) := v.miso;
               v.i                 := v.i - 1;
             else
