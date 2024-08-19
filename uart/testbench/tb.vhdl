@@ -78,10 +78,10 @@ begin
     wait for clk_period;
     uart_tx_in.start <= '0';
 
---      for i in 0 to 1 + datawidth-1 + 1 loop
---        wait until rising_edge(baud_clk);
---        assert uart_tx_out.tx = '1' report "Bit " & integer'image(i) & " is not correct" severity failure;
---      end loop;
+      for i in 0 to 1 + datawidth-1 + 1 loop
+        wait until rising_edge(baud_clk);
+        assert uart_tx_out.tx /= uart_tx_in.data(i) report "Bit " & integer'image(i) & " is not correct" severity failure;
+      end loop;
 
     if uart_tx_out.done /= '1' then
       wait until uart_tx_out.done = '1';
