@@ -9,12 +9,16 @@ end entity;
 
 architecture rtl of tb is
 
-  signal clk             : std_logic := '0';
-  signal rstn            : std_logic := '0';
-  signal uart_tx_in      : uart_tx_in_type;
-  signal uart_tx_out     : uart_tx_out_type;
-  signal baud_clk        : std_logic := '0';
-  signal sys_clk_counter : integer   := 0;
+  signal clk                   : std_logic := '0';
+  signal rstn                  : std_logic := '0';
+  signal uart_tx_in            : uart_tx_in_type;
+  signal uart_tx_out           : uart_tx_out_type;
+  signal baud_clk              : std_logic := '0';
+  signal baud_clk_prev         : std_logic := '0';
+  signal baud_clk_rising_edge  : boolean   := false;
+  signal baud_clk_falling_edge : boolean   := false;
+  signal sys_clk_counter : integer := 0;
+  signal tx_vector       : std_logic_vector(1 + datawidth-1 + 1 downto 0);
 
   constant clk_period : time := 10 ns;
 
@@ -32,16 +36,22 @@ begin
   -- clock generation
   clk <= not clk after clk_period / 2;
 
-  -- baud clock generation process
+  -- baud clock generation and edge detection process
   baud_clk_gen : process(clk)
   begin
     if rising_edge(clk) then
-      if (sys_clk_counter = sys_clk_counts) then
-        sys_clk_counter <= 0;
-        baud_clk        <= not baud_clk;
-      else
-        sys_clk_counter <= sys_clk_counter + 1;
+      if uart_tx_out.ready /= '1' then
+        if (sys_clk_counter = sys_clk_counts) then
+          sys_clk_counter <= 0;
+          baud_clk        <= not baud_clk;
+        else
+          sys_clk_counter <= sys_clk_counter + 1;
+        end if;
       end if;
+      -- baud_clk edge detection
+      baud_clk_rising_edge  <= baud_clk = '1' and baud_clk_prev = '0';
+      baud_clk_falling_edge <= baud_clk = '0' and baud_clk_prev = '1';
+      baud_clk_prev         <= baud_clk;
     end if;
   end process;
 
@@ -56,15 +66,19 @@ begin
     wait for 1000 ns;
 
     -- first transmission
+    report "-------- FIRST TRANSMISSION --------" severity note;
     uart_tx_in.start <= '1';
     uart_tx_in.data  <= "10000001";
+    tx_vector        <= '1' & "10000001" & '0';
     wait for clk_period;
     uart_tx_in.start <= '0';
 
---      for i in 0 to 1 + datawidth-1 + 1 loop
---        wait until rising_edge(baud_clk);
---        assert uart_tx_out.tx = '1' report "Bit " & integer'image(i) & " is not correct" severity failure;
---      end loop;
+    for i in 0 to 1 + datawidth-1 + 1 loop
+      wait until baud_clk_rising_edge;
+      wait for clk_period*5;  -- because this baud clock is a few cycles ahead
+      assert uart_tx_out.tx = tx_vector(i) report "Bit " & integer'image(i) & " is not correct" severity failure;
+      report "Bit " & integer'image(i) & " is correct" severity note;
+    end loop;
 
     if uart_tx_out.done /= '1' then
       wait until uart_tx_out.done = '1';
@@ -73,15 +87,19 @@ begin
     wait for 1000 ns;
 
     -- second transmission
+    report "-------- SECOND TRANSMISSION --------" severity note;
     uart_tx_in.start <= '1';
     uart_tx_in.data  <= "01111110";
+    tx_vector        <= '1' & "01111110" & '0';
     wait for clk_period;
     uart_tx_in.start <= '0';
 
-      for i in 0 to 1 + datawidth-1 + 1 loop
-        wait until rising_edge(baud_clk);
-        assert uart_tx_out.tx /= uart_tx_in.data(i) report "Bit " & integer'image(i) & " is not correct" severity failure;
-      end loop;
+    for i in 0 to 1 + datawidth-1 + 1 loop
+      wait until baud_clk_rising_edge;
+      wait for clk_period*5;  -- because this baud clock is a few cycles ahead
+      assert uart_tx_out.tx = tx_vector(i) report "Bit " & integer'image(i) & " is not correct" severity failure;
+      report "Bit " & integer'image(i) & " is correct" severity note;
+    end loop;
 
     if uart_tx_out.done /= '1' then
       wait until uart_tx_out.done = '1';

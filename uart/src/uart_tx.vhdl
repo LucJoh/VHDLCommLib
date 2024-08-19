@@ -60,7 +60,7 @@ architecture rtl of uart_tx is
                                    baud_clk_prev         => '0',
                                    baud_clk_rising_edge  => false,
                                    baud_clk_falling_edge => false,
-                                   tx                    => 'X',
+                                   tx                    => '0',
                                    done                  => '0',
                                    ready                 => '0');
 
@@ -119,7 +119,7 @@ begin
           if r.i > 1 + datawidth-1 + 1 then
             v.done  := '1';
             v.state := idle;
-            v.tx    := 'X';
+            v.tx    := '0';
           else
             v.tx := v.tx_vector(v.i);
             v.i  := v.i + 1;
