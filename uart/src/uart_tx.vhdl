@@ -37,17 +37,17 @@ architecture rtl of uart_tx is
 
   type reg_type is record
     state                 : state_type;
-    i                     : integer;    -- data index
-    sys_clk_counter       : integer;    -- system clock counter
+    i                     : integer;    -- tx_vector index
+    sys_clk_counter       : integer;    
     data                  : std_logic_vector(datawidth - 1 downto 0);
     tx_vector             : std_logic_vector(1 + datawidth-1 + 1 downto 0);
-    baud_clk              : std_logic;  -- baud clock
-    baud_clk_prev         : std_logic;  -- baud clock previous value
-    baud_clk_rising_edge  : boolean;    -- baud clock rising edge
-    baud_clk_falling_edge : boolean;    -- baud clock falling edge
-    tx                    : std_logic;  -- UART tx data
-    done                  : std_logic;  -- UART tx done
-    ready                 : std_logic;  -- UART tx ready
+    baud_clk              : std_logic;  
+    baud_clk_prev         : std_logic;  
+    baud_clk_rising_edge  : boolean;    
+    baud_clk_falling_edge : boolean;    
+    tx                    : std_logic;  
+    done                  : std_logic;  
+    ready                 : std_logic;  
   end record;
 
   -- default register values
