@@ -17,8 +17,8 @@ architecture rtl of tb is
   signal baud_clk_prev         : std_logic := '0';
   signal baud_clk_rising_edge  : boolean   := false;
   signal baud_clk_falling_edge : boolean   := false;
-  signal sys_clk_counter : integer := 0;
-  signal tx_vector       : std_logic_vector(1 + datawidth-1 + 1 downto 0);
+  signal sys_clk_counter       : integer   := 0;
+  signal tx_vector             : std_logic_vector(1 + datawidth-1 + 1 downto 0);
 
   constant clk_period : time := 10 ns;
 
