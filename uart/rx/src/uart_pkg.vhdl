@@ -6,13 +6,13 @@
 -- Author     : lucjoh
 -- Company    :
 -- Created    : 2024-07-31
--- Last update: 2024-08-18
+-- Last update: 2024-08-21
 -- Platform   :
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
--- Description: Package file for UART Tx/Rx. Contains the record types for the
---              input and output signals of the UART Tx/Rx, as well as the
---              component declarations and the parameters for the UART Tx/Rx.
+-- Description: Package file for UART Rx. Contains the record types for the
+--              input and output signals of the UART Rx, as well as the
+--              component declarations and the parameters for the UART Rx.
 --
 --              Parameters:
 --              - sys_clk_period  : The period of the system clock
@@ -45,24 +45,27 @@ package uart_pkg is
 
   constant sys_clk_counts : integer := 1000000000 / (sys_clk_period * baud_rate);
 
-  type uart_tx_in_type is record
-    start : std_logic;
-    data  : std_logic_vector(datawidth - 1 downto 0);
-  end record uart_tx_in_type;
+  type uart_rx_in_type is record
+    rx : std_logic;
+  end record uart_rx_in_type;
 
-  type uart_tx_out_type is record
+  constant uart_rx_in_default : uart_rx_in_type := (
+    rx => '1'
+    );
+
+  type uart_rx_out_type is record
     ready : std_logic;
-    tx    : std_logic;
     done  : std_logic;
-  end record uart_tx_out_type;
+    data  : std_logic_vector(datawidth - 1 downto 0);
+  end record uart_rx_out_type;
 
-  component uart_tx is
+  component uart_rx is
     port (
       clk         : in  std_logic;
       rstn        : in  std_logic;
-      uart_tx_in  : in  uart_tx_in_type;
-      uart_tx_out : out uart_tx_out_type
+      uart_rx_in  : in  uart_rx_in_type;
+      uart_rx_out : out uart_rx_out_type
       );
-  end component uart_tx;
+  end component uart_rx;
 
 end package uart_pkg;
