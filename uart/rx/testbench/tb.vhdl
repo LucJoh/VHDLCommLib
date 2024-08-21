@@ -23,8 +23,6 @@ architecture rtl of tb is
 
   constant clk_period : time := 10 ns;
 
-  signal k : integer := 0;
-
 begin
 
   -- instantiate the UART Tx module
@@ -86,8 +84,6 @@ begin
       report "DATA EXPECTED : " & to_string(data) severity note;
       report "DATA RECEIVED : " & to_string(uart_rx_out.data) severity note;
     end if;
-
-    k <= 0;
 
     wait for 1000 ns;
 
