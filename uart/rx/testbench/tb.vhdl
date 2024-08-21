@@ -81,8 +81,10 @@ begin
 
     if uart_rx_out.done /= '1' then
       wait until uart_rx_out.done = '1';
-      assert uart_rx_out.data = data report "Received data is : " & to_string(uart_rx_out.data) severity failure;
-      report "Data is correct" severity note;
+      assert uart_rx_out.data = data report "INCORRECT RECEIVED DATA : " & to_string(uart_rx_out.data) severity failure;
+      report "DATA IS CORRECT" severity note;
+      report "DATA EXPECTED : " & to_string(data) severity note;
+      report "DATA RECEIVED : " & to_string(uart_rx_out.data) severity note;
     end if;
 
     k <= 0;
@@ -102,8 +104,10 @@ begin
 
     if uart_rx_out.done /= '1' then
       wait until uart_rx_out.done = '1';
-      assert uart_rx_out.data = data report "Received data is : " & to_string(uart_rx_out.data) severity failure;
-      report "Data is correct" severity note;
+      assert uart_rx_out.data = data report "INCORRECT RECEIVED DATA : " & to_string(uart_rx_out.data) severity failure;
+      report "DATA IS CORRECT" severity note;
+      report "DATA EXPECTED : " & to_string(data) severity note;
+      report "DATA RECEIVED : " & to_string(uart_rx_out.data) severity note;
     end if;
 
     wait for 1000 ns;
