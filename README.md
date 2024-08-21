@@ -13,5 +13,3 @@ The VHDL modules in this repository are designed using the [two-process method](
 - **CAN (Controller Area Network)**
 - **TDM (Time-Division Multiplexing)**
 - **Ethernet**
-- **RS-232/RS-485**
-
