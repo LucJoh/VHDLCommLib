@@ -85,7 +85,7 @@ begin
 
     ---------------- algorithm ---------------
 
-    -- UART Tx state machine 
+    -- UART Rx state machine 
     case r.state is
 
       when idle =>
