@@ -1,6 +1,6 @@
 # VHDLCommLib
 
-Welcome to VHDLCommLib, a comprehensive library of communication protocols implemented in VHDL. This repository aims to provide high-quality, reusable VHDL modules for a wide range of communication standards, making it easier for developers and engineers to integrate robust communication capabilities into their FPGA and hardware designs.
+Welcome to VHDLCommLib, a library of communication protocols implemented in VHDL. This repository aims to provide high-quality, reusable VHDL modules for a wide range of communication standards, making it easier for developers and engineers to integrate robust communication capabilities into their FPGA and hardware designs.
 
 ## Design Methodology
 
