@@ -203,6 +203,7 @@ begin
 
       when addr =>
 
+        v.dcl_enable := '1';
         if r.dcl_rising_edge then
           v.sda := v.tx_addr(v.i);
           v.i   := v.i - 1;
