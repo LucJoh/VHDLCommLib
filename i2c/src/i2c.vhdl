@@ -205,8 +205,8 @@ begin
 
         v.dcl_enable := '1';
         if r.dcl_rising_edge then
-          v.sda := v.tx_addr(v.i);
-          v.i   := v.i - 1;
+          --v.sda := v.tx_addr(v.i);
+          --v.i   := v.i - 1;
           if r.i = 0 then
             v.sda_enable := '0';
           end if;
@@ -221,6 +221,9 @@ begin
             else
               v.state := idle;
             end if;
+          else
+            v.sda := v.tx_addr(v.i);
+            v.i   := v.i - 1;
           end if;
         end if;
 

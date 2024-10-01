@@ -10,7 +10,7 @@ end entity;
 architecture rtl of tb is
 
   signal clk         : std_logic                                := '0';
-  signal dcl         : std_logic                                := '1';
+  signal dcl_tb      : std_logic                                := '1';
   signal rstn        : std_logic                                := '0';
   signal i2c_in      : i2c_in_type;
   signal i2c_out     : i2c_out_type;
@@ -44,12 +44,14 @@ begin
     if rising_edge(clk) then
       if i2c_out.ready = '0' then
         if clk_counter = sys_clk_counts then
-          dcl <= not dcl;
+          dcl_tb      <= not dcl_tb;
+          clk_counter <= 0;
+        else
+          clk_counter <= clk_counter + 1;
         end if;
+      else
+        dcl_tb <= '1';
       end if;
-    else
-      dcl         <= '1';
-      clk_counter <= 0;
     end if;
   end process;
 
@@ -72,7 +74,7 @@ begin
     wait for clk_period;
 
     i2c_in.start <= '0';
-    dcl          <= '0';
+    --dcl_tb       <= '0';
 
     -- wait for address bits to be transmitted
     for i in addrwidth downto 0 loop

@@ -17,6 +17,8 @@ add wave i2c_inst/r.dcl
 add wave i2c_inst/r.scl
 add wave i2c_inst/r.dcl_counter
 add wave i2c_inst/r.scl_counter
+add wave dcl_tb
+add wave clk_counter
 add wave scl
 add wave sda
 
