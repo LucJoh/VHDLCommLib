@@ -11,3 +11,4 @@ transcript
 *.o
 tb
 \#*#
+/vunit_out/*

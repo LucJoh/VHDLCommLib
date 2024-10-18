@@ -1,3 +1,5 @@
+library vunit_lib;
+context vunit_lib.vunit_context;
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -5,6 +7,7 @@ use std.textio.all;
 use work.uart_pkg.all;
 
 entity tb is
+  generic (runner_cfg : string);
 end entity;
 
 architecture rtl of tb is
@@ -59,6 +62,8 @@ begin
   stimulus_process : process
   begin
 
+    test_runner_setup(runner, runner_cfg);
+
     -- reset the system
     rstn <= '0';
     wait for 20 ns;
@@ -108,8 +113,9 @@ begin
     wait for 1000 ns;
 
     -- stop the simulation
-    report "-------- TEST FINISHED SUCESSFULLY --------"
-      severity failure;
+    report "-------- TEST FINISHED SUCESSFULLY --------";
+    test_runner_cleanup(runner);
+      --severity failure;
 
   end process;
 
