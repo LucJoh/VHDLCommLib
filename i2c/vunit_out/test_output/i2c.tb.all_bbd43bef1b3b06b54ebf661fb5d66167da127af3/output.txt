@@ -1,0 +1,30 @@
+# vsim -modelsimini /home/lucas/git/VHDLCommLib/i2c/vunit_out/modelsim/modelsim.ini -wlf /home/lucas/git/VHDLCommLib/i2c/vunit_out/test_output/i2c.tb.all_bbd43bef1b3b06b54ebf661fb5d66167da127af3/modelsim/vsim.wlf -quiet -t ps -onfinish stop i2c.tb(rtl) -L vunit_lib -L i2c -g/tb/runner_cfg="active python runner : true,enabled_test_cases : ,output path : /home/lucas/git/VHDLCommLib/i2c/vunit_out/test_output/i2c.tb.all_bbd43bef1b3b06b54ebf661fb5d66167da127af3/,tb path : /home/lucas/git/VHDLCommLib/i2c/testbench/,use_color : true" 
+# Start time: 12:05:57 on Oct 19,2024
+# ** Warning: Design size of 26131 statements exceeds ModelSim-Intel FPGA Starter Edition recommended capacity.
+# Expect performance to be adversely affected.
+# ** Fatal: (vsim-3734) Index value -1 is out of range 7 downto 0.
+#    Time: 360415 ns  Iteration: 1  Process: /tb/i2c_inst/combinational File: /home/lucas/git/VHDLCommLib/i2c/src/i2c.vhdl
+# Fatal error in Process combinational at /home/lucas/git/VHDLCommLib/i2c/src/i2c.vhdl line 235
+# 
+# HDL call sequence:
+# Stopped at /home/lucas/git/VHDLCommLib/i2c/src/i2c.vhdl 235 Process combinational
+# 
+# 
+# Test Run Failed!
+# 
+# Stack trace result from 'tb' command
+#  /home/lucas/git/VHDLCommLib/i2c/src/i2c.vhdl 235 return [address 0xf6e97cb6] Process combinational
+# 
+# 
+# Surrounding code from 'see' command
+#   230 :       when data =>
+#   231 : 
+#   232 :         if r.dcl_rising_edge then
+#   233 :           -- write  
+#   234 :           if r.rw = '0' then
+# ->235 :             v.sda := v.tx_data(v.i);
+#   236 :             v.i   := v.i - 1;
+#   237 :             if r.i = 0 then
+#   238 :               v.sda_enable := '0';
+#   239 :             end if;
+# 

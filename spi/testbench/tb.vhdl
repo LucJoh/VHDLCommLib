@@ -1,5 +1,3 @@
-library vunit_lib;
-context vunit_lib.vunit_context;
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -7,7 +5,6 @@ use std.textio.all;
 use work.spi_pkg.all;
 
 entity tb is
-  generic (runner_cfg : string);
 end entity;
 
 architecture rtl of tb is
@@ -43,8 +40,6 @@ begin
   -- stimulus process
   stimulus_process : process
   begin
-
-    test_runner_setup(runner, runner_cfg);
 
     if (cpol = '0' and cpha = '1') or (cpol = '1' and cpha = '0') then  -- falling_edge(clk)
 
@@ -169,10 +164,8 @@ begin
     report "-------- READ OPERATTION --------";
     report "DATA SENT ON MISO LINE : " & to_string(miso);
     report "DATA DETECTED BY MASTER : " & to_string(spi_out.rx_data);
-    report "-------- TEST FINISHED SUCESSFULLY --------";
-    test_runner_cleanup(runner);
-    wait;
-      --severity failure;
+    report "-------- TEST FINISHED SUCESSFULLY --------"
+      severity failure;
 
   end process;
 
