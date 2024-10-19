@@ -27,76 +27,105 @@ The Makefile supports various targets to help you manage your simulation and com
 - Purpose: Display a list of available targets and their descriptions.
 - Usage:
 
-  *make help*
+```sh
+  make help
+```
 
 # init
 - Purpose: Initialize the design library and generate a copy of modelsim.ini.
 - Usage:
 
-  *make init*
+```sh
+  make init
+```
 
 # vcom
 - Purpose: Compile the design using ModelSim.
 - Usage:  
 
-  *make vcom*
+```sh
+  make vcom
+```
 
 # vsim
 - Purpose: Simulate the design using ModelSim (GUI mode).
 - Usage:  
 
-  *make vsim*
+```sh
+  make vsim
+```
 
 # vsimb
 - Purpose: Simulate the design using ModelSim in batch mode.
 - Usage:  
 
-  *make vsimb*
+```sh
+  make vsimb
+```
 
 # all
 - Purpose: Compile and simulate the design using ModelSim (GUI mode).
 - Usage:  
 
-  *make all*
+```sh
+  make all
+```
 
 # ghdl
 - Purpose: Compile and simulate the design using GHDL.
 - Usage: 
 
-  *make ghdl*
+```sh
+  make ghdl
+```
 
 - To view waveforms with GTKWave, run:
-  *gtkwave wave.ghw*
+```sh
+  gtkwave wave.ghw
+```
 - To save waveform configuration:
   Inside GTKWave, go to File -> Write Save File.
 - To load waveform configuration:
+```sh
   gtkwave wave.ghw config.gtkw
+```
 
 # nvc
 - Purpose: Compile and simulate the design using NVC.
 - Usage:  
 
-  *make nvc*
-
+```sh
+  make nvc
+```
 - To view waveforms with GTKWave, run:
-  *gtkwave wave.ghw*
+```sh
+  gtkwave wave.ghw
+```
 - To save waveform configuration:
   Inside GTKWave, go to File -> Write Save File.
 - To load waveform configuration:
+```sh
   gtkwave wave.ghw config.gtkw
+```
 
 # clean
 - Purpose: Remove all generated files.
 - Usage:  
 
-  *make clean*
+```sh
+  make clean
+```
 
 ## Example Workflow with ModelSim
 
 1. Initialize the project:  
 
-  *make init*
+```sh
+  make init
+```
 
 2. Compile and open the simulation in the GUI:  
 
-  *make all*
+```sh
+  make all
+```
