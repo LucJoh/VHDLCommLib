@@ -33,7 +33,7 @@ help:
 	@echo "$$HEADER"
 	@echo "Usage: make [help|sim|sim_write|sim_write_gui|sim_read|sim_read_gui|clean]"
 	@echo ""
-	@echo "You can set the simulator to modelsim|ghdl|nvc (modelsim is default)"
+	@echo "You need to set the simulator to modelsim|ghdl|nvc|rivierapro|activehdl|incisive"
 	@echo ""
 	@echo "For example: make sim ghdl"
 	@echo ""

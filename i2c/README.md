@@ -10,6 +10,9 @@ Ensure you have the following tools installed on your system:
   - ModelSim
   - GHDL
   - NVC
+  - Riviera-PRO
+  - Active-HDL
+  - Incisive
 * GTKWave (required for waveform viewing when using GHDL or NVC)
 * Python 3.0 (or newer)
 * VUnit (installed using pip)
