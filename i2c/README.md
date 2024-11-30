@@ -20,46 +20,62 @@ The Makefile supports various targets to help you manage your simulation and com
 - Purpose: Display a list of available targets and their descriptions.
 - Usage:
 
-  *make help*
+```sh
+  make help 
+```
 
 # sim
 - Purpose: Compile and simulate all test cases using ModelSim.
 - Usage:  
 
-  *make sim*
+```sh
+  make sim 
+```
 
 # sim_multhread
 - Purpose: Compile and simulate all test cases using ModelSim (using 2 cpu cores).
 - Usage:  
 
-  *make sim_multhread*
+```sh
+  make sim_multhread 
+```
 
 # sim_write
 - Purpose: Simulate the write operation.
 - Usage:  
 
-  *make sim_write*
+```sh
+  make sim_write 
+```
 
 # sim_write_gui
 - Purpose: Simulate the write operation with the ModelSim GUI. Add waves manually and type vunit_run in the console.
 - Usage:  
 
-  *make sim_write_gui*
+```sh
+  make sim_write_gui 
+```
 
 # sim_read
 - Purpose: Simulate the read operation.
 - Usage:  
 
-  *make sim_read*
+```sh
+  make sim_read 
+```
 
-# sim_write_gui
+# sim_read_gui
 - Purpose: Simulate the read operation with the ModelSim GUI. Add waves manually and type vunit_run in the console.
 - Usage:  
 
-  *make sim_read_gui*
+```sh
+  make sim_read_gui 
+```
 
 # clean
 - Purpose: Remove all generated files.
 - Usage:  
 
-  *make clean*
+```sh
+  make clean 
+```
