@@ -118,7 +118,6 @@ begin
         --------------------------------------------------------------
         -- WAIT FOR DONE SIGNAL TO INDICATE END OF TRANSMISSION
         --------------------------------------------------------------
-
         if done /= '1' then
           wait until done = '1';
         end if;
