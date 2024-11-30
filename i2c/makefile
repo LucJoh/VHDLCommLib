@@ -3,10 +3,10 @@ vim:noet
 .PHONY: all vcom vsim vsimb ghdl clean help init
 
 sim: clean
-	python3 run.py
+	python3 run.py -v
 
 sim_multhread: clean
-	python3 run.py -p 2
+	python3 run.py -v -p 2
 
 sim_write: clean
 	python3 run.py i2c.tb.write
