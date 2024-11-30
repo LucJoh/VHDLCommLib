@@ -31,8 +31,10 @@ help:
 	@echo "  sim_multhread:   Compile and simulate all test cases using Modelsim (using 2 cpu cores)"
 	@echo "  sim_write:       Compile and simulate the write operation using Modelsim"
 	@echo "  sim_write_gui:   Compile and simulate the write operation using Modelsim gui"
+	@echo "                   Add waves manually and type vunit_run in the console"
 	@echo "  sim_read:        Compile and simulate the read operation using Modelsim"
 	@echo "  sim_read_gui:    Compile and simulate the read operation using Modelsim gui"
+	@echo "                   Add waves manually and type vunit_run in the console"
 	@echo "  clean:           Remove all generated files"
 	@echo ""
 
