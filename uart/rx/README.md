@@ -1,4 +1,4 @@
-# UART Rx VHDL Simulation and Compilation with Makefile
+# UART Rx VHDL Compilation and Simulation with Makefile
 
 This directory contains the necessary files and a Makefile to manage VHDL simulation and compilation tasks for the UART Rx project using ModelSim, GHDL, or NVC.
 

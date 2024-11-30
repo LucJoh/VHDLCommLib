@@ -1,4 +1,4 @@
-# UART Tx VHDL Simulation and Compilation with Makefile
+# UART Tx VHDL Compilation and Simulation with Makefile
 
 This directory contains the necessary files and a Makefile to manage VHDL simulation and compilation tasks for the UART Tx project using ModelSim, GHDL, or NVC.
 
