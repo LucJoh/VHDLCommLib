@@ -78,30 +78,30 @@ begin
 
     while test_suite loop
 
-      if run("write_operation") then
-      ------------------------------------------------------------
-      -- WRITE OPERATION TEST (MASTER SENDS DATA)
-      ------------------------------------------------------------
-      start <= '1';
-      rw    <= '0';                     -- write operation
+      if run("write") then
+        ------------------------------------------------------------
+        -- WRITE OPERATION TEST (MASTER SENDS DATA)
+        ------------------------------------------------------------
+        start <= '1';
+        rw    <= '0';                   -- write operation
 
-      wait for clk_period;
+        wait for clk_period;
 
-      start <= '0';
+        start <= '0';
 
-      -------------------------------------------------------------
-      -- WAIT FOR ADDRESS BITS TO BE TRANSMITTED
-      -------------------------------------------------------------
-      for i in addrwidth downto 0 loop
-        wait until rising_edge(scl);
-      end loop;
+        -------------------------------------------------------------
+        -- WAIT FOR ADDRESS BITS TO BE TRANSMITTED
+        -------------------------------------------------------------
+        for i in addrwidth downto 0 loop
+          wait until rising_edge(scl);
+        end loop;
 
-      wait until falling_edge(scl);
-      sda <= '0';                       -- ack 
-      wait until falling_edge(scl);
-      sda <= 'Z';                       -- release SDA line
+        wait until falling_edge(scl);
+        sda <= '0';                     -- ack 
+        wait until falling_edge(scl);
+        sda <= 'Z';                     -- release SDA line
 
-      report "-------- ADDRESS BITS WRITTEN --------";
+        report "-------- ADDRESS BITS WRITTEN --------";
 
         -------------------------------------------------------------
         -- WAIT FOR DATA BITS TO BE TRANSMITTED
@@ -128,28 +128,28 @@ begin
       ------------------------------------------------------------
       -- READ OPERATION TEST (MASTER READS DATA)
       ------------------------------------------------------------
-      elsif run("read_operation") then
+      elsif run("read") then
 
-      start <= '1';
-      rw    <= '1';                     -- write operation
+        start <= '1';
+        rw    <= '1';                   -- write operation
 
-      wait for clk_period;
+        wait for clk_period;
 
-      start <= '0';
+        start <= '0';
 
-      -------------------------------------------------------------
-      -- WAIT FOR ADDRESS BITS TO BE TRANSMITTED
-      -------------------------------------------------------------
-      for i in addrwidth downto 0 loop
-        wait until rising_edge(scl);
-      end loop;
+        -------------------------------------------------------------
+        -- WAIT FOR ADDRESS BITS TO BE TRANSMITTED
+        -------------------------------------------------------------
+        for i in addrwidth downto 0 loop
+          wait until rising_edge(scl);
+        end loop;
 
-      wait until falling_edge(scl);
-      sda <= '0';                       -- ack 
-      wait until falling_edge(scl);
-      sda <= 'Z';                       -- release SDA line
+        wait until falling_edge(scl);
+        sda <= '0';                     -- ack 
+        wait until falling_edge(scl);
+        sda <= 'Z';                     -- release SDA line
 
-      report "-------- ADDRESS BITS WRITTEN --------";
+        report "-------- ADDRESS BITS WRITTEN --------";
 
         -------------------------------------------------------------
         -- WAIT FOR DATA BITS TO BE RECEIVED
@@ -159,15 +159,16 @@ begin
           wait until falling_edge(scl);
         end loop;
 
+
+        wait for 100000 ns;
+
+        assert rx_data_tb = tx_data report "-------- INCORRECT DATA READ -------- : " & to_string(rx_data_tb) severity failure;
+        report "-------- DATA IS CORRECT --------" severity note;
+        report "-------- DATA EXPECTED -------- : " & to_string(tx_data) severity note;
+        report "-------- DATA RECEIVED -------- : " & to_string(rx_data_tb) severity note;
+        report "-------- READ OPERATION FINISHED SUCESSFULLY --------";
+
       end if;
-
-      wait for 100000 ns;
-
-      assert rx_data_tb = tx_data report "-------- INCORRECT DATA READ -------- : " & to_string(rx_data_tb) severity failure;
-      report "-------- DATA IS CORRECT --------" severity note;
-      report "-------- DATA EXPECTED -------- : " & to_string(tx_data) severity note;
-      report "-------- DATA RECEIVED -------- : " & to_string(rx_data_tb) severity note;
-      report "-------- READ OPERATION FINISHED SUCESSFULLY --------";
 
     end loop;
 

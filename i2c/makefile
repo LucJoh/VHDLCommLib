@@ -1,109 +1,48 @@
-#####################################################################
-# User configuration
-#####################################################################
-
-# Name of directories
-SRC_DIR=src
-TB_DIR=testbench
-DO_DIR=do-files
-
-# Name of testbench entity
-TB_ENTITY=tb
-
-# Name of do file
-DO_FILE=$(DO_DIR)/do.do
-
-# Name of all source files in compile order
-SRC:=$(SRC_DIR)/i2c_pkg.vhdl \
-     $(SRC_DIR)/i2c.vhdl 
-
-TB=$(TB_DIR)/tb.vhdl
-
-# Specify the simulation time for GHDL and NVC
-SIM_TIME=120ms
-
-#####################################################################
-# End of user configuration
-#####################################################################
-
-#####################################################################
-#####################################################################
-
-# Tools
-VCOM=vcom -2008
-VSIM=vsim
-GHDL=ghdl
-NVC=nvc
-FLAGS="--std=08"
-
-#####################################################################
-#####################################################################
-
-# Tabs are not expanded as spaces
 vim:noet
 
 .PHONY: all vcom vsim vsimb ghdl clean help init
 
-all: clean init vcom vsim
+sim: clean
+	python3 run.py
 
-vcom: $(SRC)
-		$(VCOM) $(SRC) $(TB)
+sim_multhread: clean
+	python3 run.py -p 2
 
-vsim: $(TB_DIR)/$(TB_ENTITY).vhd*
-		$(VSIM) $(TB_ENTITY) -do $(DO_FILE)
+sim_write: clean
+	python3 run.py i2c.tb.write
 
-vsimb: $(TB_DIR)/$(TB_ENTITY).vhd*
-		$(VSIM) -c $(TB_ENTITY) -do $(DO_FILE)
+sim_write_gui: clean
+	python3 run.py i2c.tb.write --gui
 
-ghdl:
-	@$(GHDL) -a $(FLAGS) --ieee=synopsys -fexplicit -fsynopsys -frelaxed $(SRC) $(TB)
-	@$(GHDL) -e $(FLAGS) -frelaxed $(TB_ENTITY)
-	@$(GHDL) -r $(FLAGS) -frelaxed $(TB_ENTITY) --wave=wave.ghw --stop-time=$(SIM_TIME)
+sim_read: clean
+	python3 run.py i2c.tb.read
 
-nvc:
-	@$(NVC) -a $(SRC) $(TB)
-	@$(NVC) -e $(TB_ENTITY)
-	@$(NVC) -r $(TB_ENTITY) --wave=wave.ghw --stop-time=$(SIM_TIME)
-
-init:
-	vlib work
-	vmap -c
+sim_read_gui: clean
+	python3 run.py i2c.tb.read --gui
 
 clean:
-	rm -f transcript *.wlf *.ghw *.o *.cf $(TB_ENTITY) modelsim.ini work -rf
+	rm -rf vunit_out
 
 help:
 	@echo "$$HEADER"
-	@echo "Usage: make [help|init|all|vcom|vsim|vsimb|ghdl|nvc|clean]"
+	@echo "Usage: make [help|sim|sim_write|sim_write_gui|sim_read|sim_read_gui|clean]"
 	@echo ""
-	@echo "  init:   Create a design library, and generate a copy of modelsim.ini"
-	@echo "  vcom:   Compile the design using Modelsim"
-	@echo "  vsim:   Simulate the design using Modelsim" 
-	@echo "  vsimb:  Simulate the design using Modelsim in batch-mode"   
-	@echo "  all:    Compile and simulate the design using Modelsim"
-	@echo "  ghdl:   Compile and simulate the design using GHDL"
-	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
-	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
-	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
-	@echo "  nvc:    Compile and simulate the design using NVC"
-	@echo "          To view the waveforms, run 'gtkwave wave.ghw'"
-	@echo "          Save wave configuration, inside gtkwave, go to File -> Write Save File"
-	@echo "          To load the wave configuration, run 'gtkwave wave.ghw config.gtkw'"
-	@echo "  clean:  Remove all generated files"
+	@echo "  sim:             Compile and simulate all test cases using Modelsim"
+	@echo "  sim_multhread:   Compile and simulate all test cases using Modelsim (using 2 cpu cores)"
+	@echo "  sim_write:       Compile and simulate the write operation using Modelsim"
+	@echo "  sim_write_gui:   Compile and simulate the write operation using Modelsim gui"
+	@echo "  sim_read:        Compile and simulate the read operation using Modelsim"
+	@echo "  sim_read_gui:    Compile and simulate the read operation using Modelsim gui"
+	@echo "  clean:           Remove all generated files"
 	@echo ""
 
-define HEADER
-                    _         __ _ _        
-    _ __ ___   __ _| | _____ / _(_) | ___   
-   | '_ ` _ \ / _` | |/ / _ \ |_| | |/ _ \ 
-   | | | | | | (_| |   <  __/  _| | |  __/ 
-   |_| |_| |_|\__,_|_|\_\___|_| |_|_|\___| 
-     __                    _         _ _
-    / _| ___  _ __  __   _| |__   __| | |
-   | |_ / _ \| '__| \ \ / / '_ \ / _` | |
-   |  _| (_) | |     \ V /| | | | (_| | |
-   |_|  \___/|_|      \_/ |_| |_|\__,_|_|
-
+define HEADER                               
+     _     ___   _       _ _   
+    \ \   / / | | |_ __ (_) |_ 
+     \ \ / /| | | | '_ \| | __|
+      \ V / | |_| | | | | | |_ 
+       \_/   \___/|_| |_|_|\__|
+     
 endef
 
 export HEADER
