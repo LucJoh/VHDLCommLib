@@ -1,25 +1,14 @@
 # I2C VHDL Simulation and Compilation with Makefile
 
-This directory contains the necessary files and a Makefile to manage VHDL simulation and compilation tasks for the I2C project using ModelSim, GHDL, or NVC.
-
-# src/spi\_pkg.vhdl
-
-The package file contains parameters that dictates the I2C operation.
-
-- sys\_clk\_period: System clock period in ns
-- scl\_freq: SCL frequency (kHz)
-- addrwidth: Address width
-- datawidth: Data width (bits)
-- databytes: Number of data bytes following the address byte
+This directory contains the necessary files and a Makefile, to manage VHDL simulation and compilation tasks for the I2C project, using VUnit and ModelSim.
 
 ## Prerequisites
 
-Ensure you have at least one of the following tools installed on your system:
+Ensure you have the following tools installed on your system:
 
 - ModelSim
-- GHDL 
-- NVC 
-- GTKWave (required for waveform viewing when using GHDL or NVC)
+- VUnit
+- Python 3.0 (or newer)
 
 ## Usage
 
@@ -31,74 +20,44 @@ The Makefile supports various targets to help you manage your simulation and com
 
   *make help*
 
-# init
-- Purpose: Initialize the design library and generate a copy of modelsim.ini.
-- Usage:
-
-  *make init*
-
-# vcom
-- Purpose: Compile the design using ModelSim.
+# sim
+- Purpose: Compile and simulate all test cases using ModelSim.
 - Usage:  
 
-  *make vcom*
+  *make sim*
 
-# vsim
-- Purpose: Simulate the design using ModelSim (GUI mode).
+# sim_multhread
+- Purpose: Compile and simulate all test cases using ModelSim (using 2 cpu cores).
 - Usage:  
 
-  *make vsim*
+  *make sim_multhread*
 
-# vsimb
-- Purpose: Simulate the design using ModelSim in batch mode.
+# sim_write
+- Purpose: Simulate the write operation.
 - Usage:  
 
-  *make vsimb*
+  *make sim_write*
 
-# all
-- Purpose: Compile and simulate the design using ModelSim (GUI mode).
+# sim_write_gui
+- Purpose: Simulate the write operation with the ModelSim GUI. Add waves manually and type vunit_run in the console.
 - Usage:  
 
-  *make all*
+  *make sim_write_gui*
 
-# ghdl
-- Purpose: Compile and simulate the design using GHDL.
-- Usage: 
-
-  *make ghdl*
-
-- To view waveforms with GTKWave, run:
-  *gtkwave wave.ghw*
-- To save waveform configuration:
-  Inside GTKWave, go to File -> Write Save File.
-- To load waveform configuration:
-  gtkwave wave.ghw config.gtkw
-
-# nvc
-- Purpose: Compile and simulate the design using NVC.
+# sim_read
+- Purpose: Simulate the read operation.
 - Usage:  
 
-  *make nvc*
+  *make sim_read*
 
-- To view waveforms with GTKWave, run:
-  *gtkwave wave.ghw*
-- To save waveform configuration:
-  Inside GTKWave, go to File -> Write Save File.
-- To load waveform configuration:
-  gtkwave wave.ghw config.gtkw
+# sim_write_gui
+- Purpose: Simulate the read operation with the ModelSim GUI. Add waves manually and type vunit_run in the console.
+- Usage:  
+
+  *make sim_read_gui*
 
 # clean
 - Purpose: Remove all generated files.
 - Usage:  
 
   *make clean*
-
-## Example Workflow with ModelSim
-
-1. Initialize the project:  
-
-  *make init*
-
-2. Compile and open the simulation in the GUI:  
-
-  *make all*
