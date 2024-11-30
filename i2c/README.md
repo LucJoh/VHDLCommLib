@@ -6,9 +6,12 @@ This directory contains the necessary files and a Makefile, to manage VHDL simul
 
 Ensure you have the following tools installed on your system:
 
-- ModelSim
-- Python 3.0 (or newer)
-- VUnit (installed using pip)
+* One of the following simulators:
+  - ModelSim
+  - GHDL
+  - NVC
+* Python 3.0 (or newer)
+* VUnit (installed using pip)
 
 ```sh
   pip install vunit_hdl 

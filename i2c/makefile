@@ -3,21 +3,27 @@ vim:noet
 .PHONY: all vcom vsim vsimb ghdl clean help init
 
 sim:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py -v
 
 sim_multhread:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py -v -p 2
 
 sim_write:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py i2c.tb.write
 
 sim_write_gui:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py i2c.tb.write --gui
 
 sim_read:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py i2c.tb.read
 
 sim_read_gui:
+	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
 	python3 run.py i2c.tb.read --gui
 
 clean:
@@ -27,14 +33,18 @@ help:
 	@echo "$$HEADER"
 	@echo "Usage: make [help|sim|sim_write|sim_write_gui|sim_read|sim_read_gui|clean]"
 	@echo ""
-	@echo "  sim:             Compile and simulate all test cases using Modelsim"
-	@echo "  sim_multhread:   Compile and simulate all test cases using Modelsim (using 2 cpu cores)"
-	@echo "  sim_write:       Compile and simulate the write operation using Modelsim"
-	@echo "  sim_write_gui:   Compile and simulate the write operation using Modelsim gui"
-	@echo "                   Add waves manually and type vunit_run in the console"
-	@echo "  sim_read:        Compile and simulate the read operation using Modelsim"
-	@echo "  sim_read_gui:    Compile and simulate the read operation using Modelsim gui"
-	@echo "                   Add waves manually and type vunit_run in the console"
+	@echo "You can set the simulator to modelsim|ghdl|nvc (modelsim is default)"
+	@echo ""
+	@echo "For example: make sim ghdl"
+	@echo ""
+	@echo "  sim:             Compile and simulate all test cases"
+	@echo "  sim_multhread:   Compile and simulate all test cases (using 2 cpu cores)"
+	@echo "  sim_write:       Compile and simulate the write operation using"
+	@echo "  sim_write_gui:   Compile and simulate the write operation with GUI waveforms"
+	@echo "                   When using Modelsim, add waves manually and type vunit_run in the console"
+	@echo "  sim_read:        Compile and simulate the read operation"
+	@echo "  sim_read_gui:    Compile and simulate the read operation with GUI waveforms"
+	@echo "                   When using Modelsim, add waves manually and type vunit_run in the console"
 	@echo "  clean:           Remove all generated files"
 	@echo ""
 
