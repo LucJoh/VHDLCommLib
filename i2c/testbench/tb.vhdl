@@ -28,7 +28,7 @@ architecture rtl of tb is
   signal scl         : std_ulogic                                := 'Z';
   signal addr        : std_ulogic_vector(addrwidth - 1 downto 0) := "1110111";
   signal tx_data     : std_ulogic_vector(datawidth - 1 downto 0) := "11110001";
-  signal rx_data     : std_ulogic_vector(datawidth-1 downto 0)   := (others => '0');
+  signal rx_data_tb  : std_ulogic_vector(datawidth-1 downto 0)   := (others => '0');
   signal clk_counter : integer                                   := 0;
 
   constant clk_period : time := 10 ns;
@@ -47,7 +47,7 @@ begin
       addr    => addr,                  -- i
       tx_data => tx_data,               -- i
       ready   => ready,                 -- i
-      rx_data => rx_data,               -- o
+      rx_data => rx_data_tb,            -- o
       done    => done,                  -- o
       scl     => scl,                   -- io
       sda     => sda                    -- io 
@@ -71,46 +71,105 @@ begin
     ------------------------------------------------------------
     -- RESET THE SYSTEM
     ------------------------------------------------------------
-   -- rstn <= '0';
-   -- wait for 20 ns;
-   -- rstn <= '1';
+    -- rstn <= '0';
+    -- wait for 20 ns;
+    -- rstn <= '1';
     wait for 10000 ns;
 
-    ------------------------------------------------------------
-    -- WRITE OPERATION TEST (MASTER SENDS DATA)
-    ------------------------------------------------------------
-    start   <= '1';
-    rw      <= '0';              -- write operation
+    while test_suite loop
 
-    wait for clk_period;
+      if run("write_operation") then
+      ------------------------------------------------------------
+      -- WRITE OPERATION TEST (MASTER SENDS DATA)
+      ------------------------------------------------------------
+      start <= '1';
+      rw    <= '0';                     -- write operation
 
-    start <= '0';
+      wait for clk_period;
 
-    -------------------------------------------------------------
-    -- WAIT FOR ADDRESS BITS TO BE TRANSMITTED
-    -------------------------------------------------------------
-    for i in addrwidth downto 0 loop
-      wait until rising_edge(scl);
+      start <= '0';
+
+      -------------------------------------------------------------
+      -- WAIT FOR ADDRESS BITS TO BE TRANSMITTED
+      -------------------------------------------------------------
+      for i in addrwidth downto 0 loop
+        wait until rising_edge(scl);
+      end loop;
+
+      wait until falling_edge(scl);
+      sda <= '0';                       -- ack 
+      wait until falling_edge(scl);
+      sda <= 'Z';                       -- release SDA line
+
+      report "-------- ADDRESS BITS WRITTEN --------";
+
+        -------------------------------------------------------------
+        -- WAIT FOR DATA BITS TO BE TRANSMITTED
+        -------------------------------------------------------------
+        for i in datawidth-1 downto 0 loop
+          wait until rising_edge(scl);
+        end loop;
+
+        wait until falling_edge(scl);
+        sda <= '0';                     -- ack 
+        wait for scl_freq*2 * 100 ns;
+        sda <= 'Z';                     -- release SDA line
+
+        --------------------------------------------------------------
+        -- WAIT FOR DONE SIGNAL TO INDICATE END OF TRANSMISSION
+        --------------------------------------------------------------
+
+        if done /= '1' then
+          wait until done = '1';
+        end if;
+
+        report "-------- WRITE OPERATION FINISHED SUCESSFULLY --------";
+
+      ------------------------------------------------------------
+      -- READ OPERATION TEST (MASTER READS DATA)
+      ------------------------------------------------------------
+      elsif run("read_operation") then
+
+      start <= '1';
+      rw    <= '1';                     -- write operation
+
+      wait for clk_period;
+
+      start <= '0';
+
+      -------------------------------------------------------------
+      -- WAIT FOR ADDRESS BITS TO BE TRANSMITTED
+      -------------------------------------------------------------
+      for i in addrwidth downto 0 loop
+        wait until rising_edge(scl);
+      end loop;
+
+      wait until falling_edge(scl);
+      sda <= '0';                       -- ack 
+      wait until falling_edge(scl);
+      sda <= 'Z';                       -- release SDA line
+
+      report "-------- ADDRESS BITS WRITTEN --------";
+
+        -------------------------------------------------------------
+        -- WAIT FOR DATA BITS TO BE RECEIVED
+        -------------------------------------------------------------
+        for i in datawidth-1 downto 0 loop
+          sda <= tx_data(i);
+          wait until falling_edge(scl);
+        end loop;
+
+      end if;
+
+      wait for 100000 ns;
+
+      assert rx_data_tb = tx_data report "-------- INCORRECT DATA READ -------- : " & to_string(rx_data_tb) severity failure;
+      report "-------- DATA IS CORRECT --------" severity note;
+      report "-------- DATA EXPECTED -------- : " & to_string(tx_data) severity note;
+      report "-------- DATA RECEIVED -------- : " & to_string(rx_data_tb) severity note;
+      report "-------- READ OPERATION FINISHED SUCESSFULLY --------";
+
     end loop;
-
-    wait until rising_edge(scl);
-    sda <= '0';                         -- ack 
-    wait until rising_edge(scl);
-    sda <= 'Z';                         -- release SDA line
-
-    wait for 10000 ns;
-
-    report "-------- TEST FINISHED SUCESSFULLY --------";
-    test_runner_cleanup(runner);
-    wait;
-
-    --------------------------------------------------------------
-    -- WAIT FOR DONE SIGNAL TO INDICATE END OF TRANSMISSION
-    --------------------------------------------------------------
-    if done /= '1' then
-      wait until done = '1';
-    end if;
-    wait for 1000 ns;
 
     report "-------- TEST FINISHED SUCESSFULLY --------";
     test_runner_cleanup(runner);

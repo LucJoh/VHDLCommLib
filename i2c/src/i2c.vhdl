@@ -6,7 +6,7 @@
 -- Author     : lucjoh
 -- Company    : 
 -- Created    : 2024-08-23
--- Last update: 2024-11-24
+-- Last update: 2024-11-30
 -- Platform   : 
 -- Standard   : VHDL'93/02
 -------------------------------------------------------------------------------
@@ -42,10 +42,11 @@ entity i2c is
     tx_data : in  std_ulogic_vector(datawidth-1 downto 0);
     rx_data : out std_ulogic_vector(datawidth-1 downto 0);
 
-    ready : out std_ulogic;
-    done  : out std_ulogic;
+    ready     : out std_ulogic;
+    done      : out std_ulogic;
+    slave_ack : out std_ulogic;
 
-    scl : out   std_logic;
+    scl : out   std_ulogic;
     sda : inout std_logic
     );
 end i2c;
@@ -80,7 +81,6 @@ architecture rtl of i2c is
 -------------------------------------------------------  
 -- BEGIN ARCHITECTURE 
 -------------------------------------------------------
-
 begin
 
   clock_gen_process : process(clk) is
@@ -130,7 +130,7 @@ begin
 
         when idle_state =>
 
-          done <= '0';
+          slave_ack <= '0';
           if start_rising_edge then
             done       <= '0';
             i          <= addrwidth;
@@ -141,7 +141,6 @@ begin
             sda_local  <= '0';
           else
             ready      <= '1';
-            done       <= '0';
             sda_local  <= '0';
             sda_enable <= '0';
             scl_enable <= '0';
@@ -156,7 +155,7 @@ begin
             end if;
             i <= i - 1;
           end if;
-          if i = -1 then
+          if i = -2 then
             sda_enable <= '0';
           end if;
 
@@ -165,8 +164,10 @@ begin
             -- ACK
             --------------------------------------------
             if sda = '0' then
-              state <= data_state;
-              i     <= datawidth;
+              slave_ack  <= '1';
+              sda_enable <= not rw;
+              state      <= data_state;
+              i          <= datawidth - 1;
             --------------------------------------------
             --NACK
             --------------------------------------------
@@ -177,6 +178,57 @@ begin
 
         when data_state =>
 
+          slave_ack <= '0';
+          if rw     <= '0' then
+            --------------------------------------------
+            -- WRITE
+            --------------------------------------------
+            if scl_falling_edge then
+              if i > -1 then
+                sda_local <= tx_data(i);
+              end if;
+              i <= i - 1;
+            end if;
+            if i = -2 then
+              sda_enable <= '0';
+            end if;
+
+            if scl_rising_edge and i = -2 then
+              --------------------------------------------
+              -- ACK
+              --------------------------------------------
+              if sda = '0' then
+                slave_ack <= '1';
+                state     <= idle_state;
+                done      <= '1';
+              --------------------------------------------
+              --NACK
+              --------------------------------------------
+              else
+                state <= idle_state;
+              end if;
+            end if;
+
+          else
+            --------------------------------------------
+            -- READ
+            --------------------------------------------
+            rx_data   <= (others => '0');
+            sda_enable <= '0';
+            rx_data    <= (others => '0');
+            if scl_rising_edge then
+              if i > -1 then
+                rx_data_temp(i) <= sda;
+              end if;
+              i <= i - 1;
+            end if;
+            if i = -2 then
+              rx_data <= rx_data_temp;
+              state   <= idle_state;
+              done    <= '1';
+            end if;
+
+          end if;
 
         when others =>
 
