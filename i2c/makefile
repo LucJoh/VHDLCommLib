@@ -2,22 +2,22 @@ vim:noet
 
 .PHONY: all vcom vsim vsimb ghdl clean help init
 
-sim: clean
+sim:
 	python3 run.py -v
 
-sim_multhread: clean
+sim_multhread:
 	python3 run.py -v -p 2
 
-sim_write: clean
+sim_write:
 	python3 run.py i2c.tb.write
 
-sim_write_gui: clean
+sim_write_gui:
 	python3 run.py i2c.tb.write --gui
 
-sim_read: clean
+sim_read:
 	python3 run.py i2c.tb.read
 
-sim_read_gui: clean
+sim_read_gui:
 	python3 run.py i2c.tb.read --gui
 
 clean:
