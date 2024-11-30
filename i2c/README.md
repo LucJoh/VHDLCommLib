@@ -10,7 +10,9 @@ Ensure you have the following tools installed on your system:
 - Python 3.0 (or newer)
 - VUnit (installed using pip)
 
-  *pip install vunit_hdl*
+```sh
+  pip install vunit_hdl 
+```
 
 ## Usage
 
