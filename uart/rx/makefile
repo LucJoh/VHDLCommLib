@@ -49,10 +49,10 @@ all: clean init vcom vsim
 vcom: $(SRC)
 		$(VCOM) $(SRC) $(TB)
 
-vsim: $(TB_DIR)/$(TB_ENTITY).vhd*
+vsim: vcom $(TB_DIR)/$(TB_ENTITY).vhd*
 		$(VSIM) $(TB_ENTITY) -do $(DO_FILE)
 
-vsimb: $(TB_DIR)/$(TB_ENTITY).vhd*
+vsimb: vcom $(TB_DIR)/$(TB_ENTITY).vhd*
 		$(VSIM) -c $(TB_ENTITY) -do $(DO_FILE)
 
 ghdl:
