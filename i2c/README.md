@@ -43,7 +43,7 @@ Below are the available targets and their descriptions:
 ```
 
 # sim
-- Purpose: Compile and simulate all test cases using ModelSim.
+- Purpose: Compile and simulate all test cases.
 - Usage:  
 
 ```sh
@@ -51,7 +51,7 @@ Below are the available targets and their descriptions:
 ```
 
 # sim_multhread
-- Purpose: Compile and simulate all test cases using ModelSim (using 2 cpu cores).
+- Purpose: Compile and simulate all test cases (using 2 cpu cores).
 - Usage:  
 
 ```sh
@@ -67,7 +67,7 @@ Below are the available targets and their descriptions:
 ```
 
 # sim_write_gui
-- Purpose: Simulate the write operation with the ModelSim GUI. Add waves manually and type vunit_run in the console.
+- Purpose: Simulate the write operation with the waveform GUI.
 - Usage:  
 
 ```sh
@@ -83,7 +83,7 @@ Below are the available targets and their descriptions:
 ```
 
 # sim_read_gui
-- Purpose: Simulate the read operation with the ModelSim GUI. Add waves manually and type vunit_run in the console.
+- Purpose: Simulate the read operation with the waveform GUI.
 - Usage:  
 
 ```sh
