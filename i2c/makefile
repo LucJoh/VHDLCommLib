@@ -1,6 +1,6 @@
 vim:noet
 
-.PHONY: all vcom vsim vsimb ghdl clean help init
+export VUNIT_SIMULATOR=ghdl
 
 sim:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
