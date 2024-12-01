@@ -23,7 +23,16 @@ Ensure you have the following tools installed on your system:
 
 ## Usage
 
-The Makefile supports various targets to help you manage your simulation and compilation workflow. Below are the available targets and their descriptions:
+The Makefile supports various targets to help you manage your simulation and compilation workflow.
+
+When compiling and simulating, is is required to specify the simulator tool.
+For example:
+
+```sh
+  make sim_multhread ghdl 
+```
+
+Below are the available targets and their descriptions:
 
 # help
 - Purpose: Display a list of available targets and their descriptions.

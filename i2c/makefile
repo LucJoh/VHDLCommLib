@@ -35,7 +35,7 @@ help:
 	@echo ""
 	@echo "You need to set the simulator to modelsim|ghdl|nvc|rivierapro|activehdl|incisive"
 	@echo ""
-	@echo "For example: make sim ghdl"
+	@echo "For example: make sim_multread ghdl"
 	@echo ""
 	@echo "  sim:             Compile and simulate all test cases"
 	@echo "  sim_multhread:   Compile and simulate all test cases (using 2 cpu cores)"
