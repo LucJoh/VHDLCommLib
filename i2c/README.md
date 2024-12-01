@@ -1,6 +1,6 @@
 # I2C VHDL Compilation and Simulation with VUnit
 
-This directory contains the necessary files and a Makefile, to manage VHDL simulation and compilation tasks for the I2C project, using VUnit and ModelSim.
+This directory contains the necessary files and a Makefile, to manage VHDL simulation and compilation tasks for the I2C project, using VUnit.
 
 ## Prerequisites
 
