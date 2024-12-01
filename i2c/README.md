@@ -25,7 +25,7 @@ Ensure you have the following tools installed on your system:
 
 The Makefile supports various targets to help you manage your simulation and compilation workflow.
 
-When compiling and simulating, is is required to specify the simulator tool.
+When compiling and simulating, it is required to specify the simulator tool.
 For example:
 
 ```sh
