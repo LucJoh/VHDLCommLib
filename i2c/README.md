@@ -35,64 +35,56 @@ For example:
 Below are the available targets and their descriptions:
 
 # help
-- Purpose: Display a list of available targets and their descriptions.
-- Usage:
+- Display a list of available targets and their descriptions:
 
 ```sh
   make help 
 ```
 
 # sim
-- Purpose: Compile and simulate all test cases.
-- Usage:  
+- Compile and simulate all test cases:
 
 ```sh
   make sim 
 ```
 
 # sim_multhread
-- Purpose: Compile and simulate all test cases (using 2 cpu cores).
-- Usage:  
+- Compile and simulate all test cases (using 2 cpu cores):
 
 ```sh
   make sim_multhread 
 ```
 
 # sim_write
-- Purpose: Simulate the write operation.
-- Usage:  
+- Simulate the write operation:
 
 ```sh
   make sim_write 
 ```
 
 # sim_write_gui
-- Purpose: Simulate the write operation with the waveform GUI.
-- Usage:  
+- Simulate the write operation with the waveform GUI:
 
 ```sh
   make sim_write_gui 
 ```
 
 # sim_read
-- Purpose: Simulate the read operation.
-- Usage:  
+- Simulate the read operation:
 
 ```sh
   make sim_read 
 ```
 
 # sim_read_gui
-- Purpose: Simulate the read operation with the waveform GUI.
-- Usage:  
+- Simulate the read operation with the waveform GUI:
 
 ```sh
   make sim_read_gui 
 ```
 
 # clean
-- Purpose: Remove all generated files.
-- Usage:  
+- Remove all generated files:
 
 ```sh
   make clean 
