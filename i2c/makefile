@@ -16,7 +16,7 @@ sim_write:
 
 sim_write_gui:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py i2c.tb.write --gui
+	python3 run.py i2c.tb.write --gui 
 
 sim_read:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
@@ -41,10 +41,8 @@ help:
 	@echo "  sim_multhread:   Compile and simulate all test cases (using 2 cpu cores)"
 	@echo "  sim_write:       Compile and simulate the write operation using"
 	@echo "  sim_write_gui:   Compile and simulate the write operation with GUI waveforms"
-	@echo "                   When using Modelsim, add waves manually and type vunit_run in the console"
 	@echo "  sim_read:        Compile and simulate the read operation"
 	@echo "  sim_read_gui:    Compile and simulate the read operation with GUI waveforms"
-	@echo "                   When using Modelsim, add waves manually and type vunit_run in the console"
 	@echo "  clean:           Remove all generated files"
 	@echo ""
 
