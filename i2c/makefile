@@ -39,7 +39,7 @@ help:
 	@echo ""
 	@echo "  sim:             Compile and simulate all test cases"
 	@echo "  sim_multhread:   Compile and simulate all test cases (using 2 cpu cores)"
-	@echo "  sim_write:       Compile and simulate the write operation using"
+	@echo "  sim_write:       Compile and simulate the write operation"
 	@echo "  sim_write_gui:   Compile and simulate the write operation with GUI waveforms"
 	@echo "  sim_read:        Compile and simulate the read operation"
 	@echo "  sim_read_gui:    Compile and simulate the read operation with GUI waveforms"
