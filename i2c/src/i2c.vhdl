@@ -144,6 +144,7 @@ begin
             sda_local  <= '0';
             sda_enable <= '0';
             scl_enable <= '0';
+            done       <= '0';
           end if;
 
         when addr_state =>
@@ -238,7 +239,7 @@ begin
     end if;
   end process;
 
-  scl <= scl_local when scl_enable = '1' else '1';
+  scl <= scl_local when scl_enable = '1' else 'Z';
   sda <= sda_local when sda_enable = '1' else 'Z';
 
 end architecture;

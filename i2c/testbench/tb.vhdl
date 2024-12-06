@@ -118,9 +118,11 @@ begin
         --------------------------------------------------------------
         -- WAIT FOR DONE SIGNAL TO INDICATE END OF TRANSMISSION
         --------------------------------------------------------------
-        if done /= '1' then
-          wait until done = '1';
+        if ready /= '1' then
+          wait until ready = '1';
         end if;
+
+        wait for 100000 ns;
 
         report "-------- WRITE OPERATION FINISHED SUCESSFULLY --------";
 
@@ -157,7 +159,7 @@ begin
           sda <= tx_data(i);
           wait until falling_edge(scl);
         end loop;
-
+        sda <= 'Z';
 
         wait for 100000 ns;
 

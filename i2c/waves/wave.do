@@ -8,5 +8,7 @@ add wave -color yellow i2c_inst/tx_data
 add wave -color yellow i2c_inst/state
 add wave -color yellow i2c_inst/scl
 add wave -color yellow i2c_inst/sda
+add wave -color yellow i2c_inst/done
+add wave -color yellow i2c_inst/rx_data
 
 run -all
