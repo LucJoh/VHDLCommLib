@@ -12,7 +12,7 @@ sim_multhread:
 
 sim_write:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py i2c.tb.write
+	python3 run.py i2c.tb.write -v
 
 sim_write_gui:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
@@ -20,7 +20,7 @@ sim_write_gui:
 
 sim_read:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py i2c.tb.read
+	python3 run.py i2c.tb.read -v
 
 sim_read_gui:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
