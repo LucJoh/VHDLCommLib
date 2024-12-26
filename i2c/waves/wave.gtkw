@@ -1,0 +1,30 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Thu Dec 26 09:48:43 2024
+[*]
+[dumpfile] "/Users/lucas/git/VHDLCommLib/i2c/vunit_out/test_output/i2c.tb.write_110ea50786393a6089b282718ccacf99d9f2ce0f/nvc/tb.fst"
+[dumpfile_mtime] "Thu Dec 26 09:42:37 2024"
+[dumpfile_size] 2254
+[savefile] "/Users/lucas/git/VHDLCommLib/i2c/waves/write.gtkw"
+[timestart] 0
+[size] 1920 1080
+[pos] -1 -26
+*-35.688507 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[sst_width] 37
+[signals_width] 128
+[sst_expanded] 0
+[sst_vpaned_height] 327
+@28
+tb.clk
+tb.i2c_inst.scl
+tb.i2c_inst.sda
+tb.i2c_inst.state
+tb.i2c_inst.rw
+tb.i2c_inst.ready
+tb.i2c_inst.start
+tb.done
+tb.addr[6:0]
+tb.tx_data[7:0]
+tb.i2c_inst.rx_data[7:0]
+[pattern_trace] 1
+[pattern_trace] 0

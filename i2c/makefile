@@ -16,7 +16,7 @@ sim_write:
 
 sim_write_gui:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py i2c.tb.write --gui 
+	python run.py i2c.tb.write --gtkwave-args "-a waves/wave.gtkw" --gui
 
 sim_read:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
@@ -24,7 +24,7 @@ sim_read:
 
 sim_read_gui:
 	$(eval VUNIT_SIMULATOR = $(word 2, $(MAKECMDGOALS)))
-	python3 run.py i2c.tb.read --gui
+	python run.py i2c.tb.read --gtkwave-args "-a waves/wave.gtkw" --gui
 
 clean:
 	rm -rf vunit_out

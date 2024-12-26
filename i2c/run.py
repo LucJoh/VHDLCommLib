@@ -12,7 +12,7 @@ i2c.add_source_files(join(ROOT, "testbench", "*.vhdl"))
 
 # Add waveform automatically when running in GUI mode.
 i2c.set_sim_option("modelsim.init_file.gui","waves/wave.do")
-i2c.set_sim_option("ghdl.viewer_script.gui","waves/wave.tcl")
-i2c.set_sim_option("nvc.viewer_script.gui","waves/wave.tcl")
+#i2c.set_sim_option("ghdl.viewer_script.gui","waves/wave.tcl")
+#i2c.set_sim_option("nvc.viewer_script.gui","waves/wave.tcl")
 
 VU.main()
