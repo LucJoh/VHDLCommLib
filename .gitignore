@@ -11,4 +11,4 @@ transcript
 *.o
 tb
 \#*#
-i2c/vunit_out/*
+vhdl/i2c/vunit_out/*
