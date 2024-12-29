@@ -12,3 +12,5 @@ transcript
 tb
 \#*#
 vhdl/i2c/vunit_out/*
+verilog/quicksilicon/mux/simulation
+verilog/quicksilicon/mux/*.vcd
