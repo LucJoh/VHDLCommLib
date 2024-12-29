@@ -1,0 +1,2 @@
+src/day1.sv
+testbench/day1_tb.sv
